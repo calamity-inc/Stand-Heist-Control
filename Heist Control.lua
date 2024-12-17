@@ -39,7 +39,7 @@
     --- Important
 
         HC_VERSION = "V 3.4.4"
-        CODED_GTAO_VERSION = 1.69
+        CODED_GTAO_VERSION = 1.69 -- b3258
 
     ---
 
