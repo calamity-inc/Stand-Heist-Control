@@ -5855,39 +5855,6 @@
 
     ---
 
-    menu.list_action(TOOLS, TRANSLATE("Request Services"), {"hcreq"}, "", {
-        { 1, TRANSLATE("MOC"), {"moc"}, "" },
-        { 2, TRANSLATE("Avenger"), {"avenger"}, "" },
-        { 3, TRANSLATE("Terrorbyte"), {"terrorbyte"}, "" },
-        { 4, TRANSLATE("Kosatka"), {"kosatka"}, "" },
-        { 5, TRANSLATE("Acid Lab"), {"acidlab"}, "" },
-        { 6, TRANSLATE("Dingy"), {"dingy"}, "" },
-        { 7, TRANSLATE("Motorbike"), {"motorbike"}, "" },
-        { 8, TRANSLATE("Ballistic Armor"), {"ballisticarmor"}, "" },
-        { 9, TRANSLATE("RC Tank"), {"rctank"}, "" },
-    }, function(index)
-        -- [[update]] possibly outdated
-        if index == 1 then
-            SET_INT_GLOBAL(2738934 + 945, 1)
-        elseif index == 2 then
-            SET_INT_GLOBAL(2738934 + 953, 1)
-        elseif index == 3 then
-            SET_INT_GLOBAL(2738934 + 958, 1)
-        elseif index == 4 then
-            SET_INT_GLOBAL(2738934 + 975, 1)
-        elseif index == 5 then
-            SET_INT_GLOBAL(2738934 + 959, 1)
-        elseif index == 6 then
-            SET_INT_GLOBAL(2738934 + 977, 1)
-        elseif index == 7 then
-            SET_INT_GLOBAL(2738934 + 1009, 1)
-        elseif index == 8 then
-            SET_INT_GLOBAL(2738934 + 916, 1)
-        elseif index == 9 then
-            SET_INT_GLOBAL(2738934 + 6932, 1)
-        end
-    end)
-
     PRESET_STAT_EDITOR = menu.list(TOOLS, TRANSLATE("Preset Stat Editor"), {}, "", function(); end)
 
         PLAYTIME_EDITOR = menu.list(PRESET_STAT_EDITOR, TRANSLATE("Playtime"), {}, "", function(); end)
