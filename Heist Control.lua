@@ -6774,7 +6774,7 @@
     menu.divider(INFOS, TRANSLATE("About HC"))
 
         menu.hyperlink(INFOS, TRANSLATE("Join Discord Server!"), "https://discord.gg/KTFAYQn5Xz", TRANSLATE("If you have any questions regarding Heist Control? Joining it will help you so much!") .. "\n\n" .. TRANSLATE("- Download sharable customized translations and GTAHaXUI stat files.") .. "\n" .. TRANSLATE("- Post a suggestion or an issue to improve Heist Control."))
-        menu.hyperlink(INFOS, TRANSLATE("Changelog"), "https://github.com/IceDoomfist/Stand-Heist-Control/releases", TRANSLATE("If you want to know what was changed in the latest version, click me!"))
+        menu.hyperlink(INFOS, TRANSLATE("Changelog"), "https://github.com/calamity-inc/Stand-Heist-Control", TRANSLATE("If you want to know what was changed in the latest version, click me!"))
 
     ---
 
