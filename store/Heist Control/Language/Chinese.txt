@@ -361,7 +361,7 @@ Because this feature works via requesting the Ballistic Armor, it'll be dropped 
 Instant Finish Heists & Others = 秒过抢劫 & 其他
 Heists = 抢劫
 Cayo / Tuners / ULP / Agency = 佩里科海岛/改装铺/ULP/合约
-Casino Aggressive / Classic = 赌场豪劫/公寓抢劫
+Casino Aggressive / Classic = 赌场 气势汹汹/公寓抢劫
 Doomsday = 末日豪劫
 Air Cargo = 机库电脑
 (Selling Only) = (仅出售任务)
