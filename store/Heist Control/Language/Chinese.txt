@@ -361,7 +361,7 @@ Because this feature works via requesting the Ballistic Armor, it'll be dropped 
 Instant Finish Heists & Others = 秒过抢劫 & 其他
 Heists = 抢劫
 Cayo / Tuners / ULP / Agency = 佩里科海岛/改装铺/ULP/合约
-Casino Aggressive / Classic = 赌场 气势汹汹/公寓抢劫
+Casino / Classic = 赌场豪劫/公寓抢劫
 Doomsday = 末日豪劫
 Air Cargo = 机库电脑
 (Selling Only) = (仅出售任务)
@@ -704,7 +704,6 @@ Ms Baker Job = 贝克女士工作
 Export Mixed Goods Mission = 出口混合货物
 Yohan Nightclub Mission = 尤汉夜总会任务
 Biker Bar Mission = 摩托帮酒吧任务
-Instant finishing Pacific Standard heist won't work. = 在太平洋银行抢劫中无效.
 San Andreas Mercenaries Terminal = 圣安地列斯雇佣兵终端
 Agency = 事务所
 Increase Team Lives = 增加团队生命数
