@@ -553,6 +553,36 @@
             SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED(name)
         end
 
+        function IS_SCRIPT_ACTIVE(script_name)
+            return SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(util.joaat(script_name)) > 0
+        end
+
+        function IS_HOST_OF_THIS_SCRIPT(script_name)
+            local is_host = false
+            if IS_SCRIPT_ACTIVE(script_name) then
+                util.spoof_script(script_name, function()
+                    is_host = NETWORK.NETWORK_IS_HOST_OF_THIS_SCRIPT()
+                end)
+            end
+            return is_host
+        end
+        
+        function REQUEST_TO_BE_HOST(script_name)
+            if IS_SCRIPT_ACTIVE(script_name) then
+                if not IS_HOST_OF_THIS_SCRIPT(script_name) then
+                    local st_time = util.current_time_millis() + 3000
+                    repeat
+                        util.request_script_host(script_name)
+                        util.yield()
+                    until IS_HOST_OF_THIS_SCRIPT(script_name) or util.current_time_millis() > st_time or not IS_SCRIPT_ACTIVE(script_name)
+                    return IS_HOST_OF_THIS_SCRIPT(script_name)
+                else
+                    return true
+                end
+            end
+            return false
+        end
+
     ---
 
     --- Notification Settings
@@ -1729,8 +1759,9 @@ util.yield()
         end)
 
         menu.action(PERICO_ADV, TRANSLATE("Increase Team Lives"), {"hccpincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-            menu.trigger_commands("scripthost")
-            SET_INT_LOCAL("fm_mission_controller_2020", 58874 + 1109 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            if REQUEST_TO_BE_HOST("fm_mission_controller_2020") then
+                SET_INT_LOCAL("fm_mission_controller_2020", 58874 + 1109 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            end
         end)
 
         menu.action(PERICO_ADV, TRANSLATE("Remove The Drainage Pipe"), {"hccprempipe"}, "(" .. TRANSLATE("Cayo Perico Heist") .. " > " .. TRANSLATE("Teleport Places") .. " > " .. TRANSLATE("Island") .. " > " .. TRANSLATE("Drainage Pipe") .. ")", function()
@@ -2615,8 +2646,9 @@ util.yield()
         end)
 
         menu.action(CAH_ADVCED, TRANSLATE("Increase Team Lives"), {"hccahincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-            menu.trigger_commands("scripthost")
-            SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            if REQUEST_TO_BE_HOST("fm_mission_controller") then
+                SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            end
         end)
 
         menu.action(CAH_ADVCED, TRANSLATE("Refresh Arcade Boards"), {"hccahrefreshboards"}, TRANSLATE("You can update casino heist stats while even you in the arcade."), function()
@@ -3363,8 +3395,9 @@ util.yield()
     end)
 
     menu.action(DOOMS_HEIST, TRANSLATE("Increase Team Lives"), {"hcdoomsincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-        menu.trigger_commands("scripthost")
-        SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+        if REQUEST_TO_BE_HOST("fm_mission_controller") then
+            SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+        end
     end)
 
     menu.action(DOOMS_HEIST, TRANSLATE("Refresh Heist Screen On Facility"), {"hcdoomsrefreshscreen"}, TRANSLATE("You can update changed doomsday heist stats in the Facility by refreshing it."), function()
@@ -3573,8 +3606,9 @@ util.yield()
     end)
 
     menu.action(CLASSIC_HEISTS, TRANSLATE("Increase Team Lives"), {"hcclassicincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-        menu.trigger_commands("scripthost")
-        SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+        if REQUEST_TO_BE_HOST("fm_mission_controller") then
+            SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+        end
     end)
 
     menu.action(CLASSIC_HEISTS, TRANSLATE("Unlock All Classic Heists"), {"hcclassicunlockall"}, TRANSLATE("Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes."), function() -- Big thanks to @negotium.rpm on Discord
@@ -5334,31 +5368,32 @@ util.yield()
         menu.divider(INSTANT_FINISH, TRANSLATE("Heists"))
 
             menu.action(INSTANT_FINISH, TRANSLATE("Cayo / Tuners / ULP / Agency"), {"hcinsfincp"}, TRANSLATE("Note that may works for some of other preps. Only 'Quick Preset' is compatible with Cayo Perico Heist."), function() -- https://www.unknowncheats.me/forum/3524081-post3.html
-                menu.trigger_commands("scripthost")
-
-                SET_INT_LOCAL("fm_mission_controller_2020", 52171, 9) -- 'fm_mission_controller_2020' instant finish variable? [[update]]
-                SET_INT_LOCAL("fm_mission_controller_2020", 52171 + 1776 + 1, 50) -- 'fm_mission_controller_2020' instant finish variable? [[update]]
+                if REQUEST_TO_BE_HOST("fm_mission_controller_2020") then
+                    SET_INT_LOCAL("fm_mission_controller_2020", 52171, 9) -- 'fm_mission_controller_2020' instant finish variable? [[update]]
+                    SET_INT_LOCAL("fm_mission_controller_2020", 52171 + 1776 + 1, 50) -- 'fm_mission_controller_2020' instant finish variable? [[update]]
+                end
             end)
 
-            menu.action(INSTANT_FINISH, TRANSLATE("Casino Aggressive / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money.") .. "\n\n" .. TRANSLATE("Instant finishing Pacific Standard heist won't work."), function()
-                menu.trigger_commands("scripthost")
-                
+            menu.action(INSTANT_FINISH, TRANSLATE("Casino / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money."), function()
+                if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                SET_INT_LOCAL("fm_mission_controller", 19781 + 1741, 80) -- Casino Aggressive Kills & Act 3
-                SET_INT_LOCAL("fm_mission_controller", 19781 + 2686, 10000000) -- How much did you take in the casino and pacific standard heist
-                SET_INT_LOCAL("fm_mission_controller", 27489 + 859 + 18, 99999) -- 'fm_mission_controller' instant finish variable? (possibly outdated)
-                SET_INT_LOCAL("fm_mission_controller", 31656 + 69, 99999) -- 'fm_mission_controller' instant finish variable? (this is writing nonsense + possibly outdated)
+                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1062, 5)  -- Instant Finish for the "Silent and Sneaky" and "BigCon" and "Pacific Standard" heists
+                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1740 + 1, 80) -- Casino Aggressive Kills & Act 3
+                    SET_INT_LOCAL("fm_mission_controller", 19781 + 2686, 10000000) -- How much did you take in the casino and pacific standard heist
+                    SET_INT_LOCAL("fm_mission_controller", 28400 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 31656 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
+                end
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Doomsday"), {"hcinsfindooms"}, TRANSLATE("Note that you may press multiple times to instant finish the heist."), function()
-                menu.trigger_commands("scripthost")
-
+                if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                SET_INT_LOCAL("fm_mission_controller", 19781, 12) -- ???, 'fm_mission_controller' instant finish variable?
-                SET_INT_LOCAL("fm_mission_controller", 19781 + 1741, 150) -- Casino Aggressive Kills & Act 3 1741 possibly outdated
-                SET_INT_LOCAL("fm_mission_controller", 27489 + 859 + 18, 99999) -- 'fm_mission_controller' instant finish variable? (possibly outdated)
-                SET_INT_LOCAL("fm_mission_controller", 31656 + 69, 99999) -- 'fm_mission_controller' instant finish variable? (this is writing nonsense + possibly outdated)
-                SET_INT_LOCAL("fm_mission_controller", 31656 + 97, 80) -- Act 1 Kills? Seem not to work (this is writing nonsense + possibly outdated)
+                    SET_INT_LOCAL("fm_mission_controller", 19781, 12) -- ???, 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1740 + 1, 150) -- Casino Aggressive Kills & Act 3
+                    SET_INT_LOCAL("fm_mission_controller", 28400 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 31656 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1725 + 1, 80) -- Act 1 Kills
+                end
             end)
             
         ---

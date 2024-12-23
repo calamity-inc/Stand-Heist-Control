@@ -372,7 +372,7 @@ Because this feature works via requesting the Ballistic Armor, it'll be dropped 
 Instant Finish Heists & Others = Instant Finish Heists & Others
 Heists = Heists
 Cayo / Tuners / ULP / Agency = Cayo / Tuners / ULP / Agency
-Casino Aggressive / Classic = Casino Aggressive / Classic
+Casino / Classic = Casino / Classic
 Doomsday = Doomsday
 Air Cargo = Air Cargo
 (Selling Only) = (Selling Only)
@@ -716,7 +716,6 @@ Ms Baker Job = Ms Baker Job
 Export Mixed Goods Mission = Export Mixed Goods Mission
 Yohan Nightclub Mission = Yohan Nightclub Mission
 Biker Bar Mission = Biker Bar Mission
-Instant finishing Pacific Standard heist won't work. = Instant finishing Pacific Standard heist won't work.
 San Andreas Mercenaries Terminal = San Andreas Mercenaries Terminal
 Agency = Agency
 Motorbike = Motorbike
