@@ -5827,13 +5827,18 @@ util.yield()
             }
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Taze"), {"hctazecam"}, "", function()
+                local weapon_hash = util.joaat("WEAPON_STUNGUN")
+                WEAPON.REQUEST_WEAPON_ASSET(weapon_hash,31,0)
+                while not WEAPON.HAS_WEAPON_ASSET_LOADED(weapon_hash) do 
+                    util.yield() 
+                end
                 for _, ent in pairs(entities.get_all_objects_as_pointers()) do
                     for __, cam in pairs(AllCamLists) do
                         if entities.get_model_hash(ent) == cam then
                             local CamPos = entities.get_position(ent)
                             local AddPos = entities.get_position(ent)
                             AddPos.z = AddPos.z + 0.5
-                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 20, true, util.joaat("WEAPON_STUNGUN"), players.user_ped(), false, true, 1000)
+                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 20, true, weapon_hash, players.user_ped(), false, true, 1000)
                         end
                     end
                 end
