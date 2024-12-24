@@ -508,9 +508,9 @@
         end
 
         function DELETE_OBJECT_BY_HASH(hash)
-            for _, ent in pairs(entities.get_all_objects_as_handles()) do
-                if ENTITY.GET_ENTITY_MODEL(ent) == hash then
-                    entities.delete_by_handle(ent)
+            for _, ent in pairs(entities.get_all_objects_as_pointers()) do
+                if entities.get_model_hash(ent) == hash then
+                    entities.delete(ent)
                 end
             end
         end
@@ -583,6 +583,12 @@
             return false
         end
 
+        function REQUEST_WEAPON_ASSET(weapon_hash)
+            WEAPON.REQUEST_WEAPON_ASSET(weapon_hash,31,0)
+            while not WEAPON.HAS_WEAPON_ASSET_LOADED(weapon_hash) do 
+                util.yield() 
+            end
+        end
     ---
 
     --- Notification Settings
@@ -5792,14 +5798,16 @@ util.yield()
             end)
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Shoot"), {"hcshootped"}, "", function() -- Thanks for coding this, @pedro9558 on Discord
+                local weapon_hash = util.joaat("WEAPON_HEAVYSNIPER")
+                REQUEST_WEAPON_ASSET(weapon_hash)
                 for _, ped in pairs(entities.get_all_peds_as_handles()) do
                     if IS_PLAYER_PED(ped) or ENTITY.IS_ENTITY_DEAD(ped) then goto out end
                     if PED.GET_VEHICLE_PED_IS_USING(ped) ~= 0 then TASK.CLEAR_PED_TASKS_IMMEDIATELY(ped) end
 
                     local PedPos = ENTITY.GET_ENTITY_COORDS(ped)
                     local AddPos = ENTITY.GET_ENTITY_COORDS(ped)
-                    AddPos.z = AddPos.z + 1
-                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, PedPos.x, PedPos.y, PedPos.z, 1000, false, 0xC472FE2, players.user_ped(), false, true, 1000)
+                    AddPos.z = AddPos.z + 0.5
+                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, PedPos.x, PedPos.y, PedPos.z, 1000, false, weapon_hash, players.user_ped(), false, true, 1000)
                     ::out::
                 end
             end)
@@ -5827,13 +5835,15 @@ util.yield()
             }
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Taze"), {"hctazecam"}, "", function()
-                for _, ent in pairs(entities.get_all_objects_as_handles()) do
+                local weapon_hash = util.joaat("WEAPON_STUNGUN")
+                REQUEST_WEAPON_ASSET(weapon_hash)
+                for _, ent in pairs(entities.get_all_objects_as_pointers()) do
                     for __, cam in pairs(AllCamLists) do
-                        if ENTITY.GET_ENTITY_MODEL(ent) == cam then
-                            local CamPos = ENTITY.GET_ENTITY_COORDS(ent)
-                            local AddPos = ENTITY.GET_ENTITY_COORDS(ent)
-                            AddPos.z = AddPos.z + 1
-                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 1000, false, 0x3656C8C1, players.user_ped(), false, true, 1000)
+                        if entities.get_model_hash(ent) == cam then
+                            local CamPos = entities.get_position(ent)
+                            local AddPos = entities.get_position(ent)
+                            AddPos.z = AddPos.z + 0.5
+                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 20, true, weapon_hash, players.user_ped(), false, true, 1000)
                         end
                     end
                 end
