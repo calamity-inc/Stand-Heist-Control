@@ -674,7 +674,6 @@
         INT_MIN = -2147483648
         INT_MAX = 2147483647
 
-        SubBlip, SubControlBlip = 0, 0
         TPs = {}
         local is_minimap_locked = false
         util.create_tick_handler(function()
@@ -682,8 +681,6 @@
                 HUD.UNLOCK_MINIMAP_POSITION()
                 is_minimap_locked = false
             end
-            SubBlip = HUD.GET_FIRST_BLIP_INFO_ID(760)
-            SubControlBlip = HUD.GET_FIRST_BLIP_INFO_ID(773)
         end)
 
         if READ_SETTING("Timer Color") == "Stand" then
