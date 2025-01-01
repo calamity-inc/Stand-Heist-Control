@@ -570,7 +570,7 @@
         function REQUEST_TO_BE_HOST(script_name)
             if IS_SCRIPT_ACTIVE(script_name) then
                 if not IS_HOST_OF_THIS_SCRIPT(script_name) then
-                    local st_time = util.current_time_millis() + 3000
+                    local timeout = util.current_time_millis() + 3000
                     repeat
                         util.request_script_host(script_name)
                         util.yield()
@@ -588,6 +588,30 @@
             while not WEAPON.HAS_WEAPON_ASSET_LOADED(weapon_hash) do 
                 util.yield() 
             end
+        end
+
+        function HAS_TELEPORT_OPTION_FOCUS()
+            for i = 1, #TPs do
+                for j = 1, #TPs[i] do
+                    if TPs[i][j][2] ~= nil then
+                        if menu.is_focused(TPs[i][j][1]) then
+                            return true
+                        end
+                    end
+                end
+            end
+            return false
+        end
+        
+        function IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE()
+            if GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 then -- [[update]]
+                return true
+            end
+            return false
+        end
+		
+        function IS_CURRENT_MISSION_CASINO_HEIST_FINALE()
+            return GET_INT_GLOBAL(2684718 + 21) == 1 -- [[update]]
         end
     ---
 
@@ -654,7 +678,13 @@
         INT_MAX = 2147483647
 
         SubBlip, SubControlBlip = 0, 0
+        TPs = {}
+        local is_minimap_locked = false
         util.create_tick_handler(function()
+            if is_minimap_locked and not HAS_TELEPORT_OPTION_FOCUS() or is_minimap_locked and not menu.is_open() then
+                HUD.UNLOCK_MINIMAP_POSITION()
+                is_minimap_locked = false
+            end
             SubBlip = HUD.GET_FIRST_BLIP_INFO_ID(760)
             SubControlBlip = HUD.GET_FIRST_BLIP_INFO_ID(773)
         end)
@@ -1609,21 +1639,22 @@ util.yield()
 
         TELEPORT_CP_KOSATKA = menu.action(TELEPORT_CP, TRANSLATE("Kosatka: Heist Board"), {"hctpsub"}, TRANSLATE("Note that works on best when you are alone in your session."), function()
             if STAT_GET_INT("IH_SUB_OWNED") ~= 0 then
-                if not HUD.DOES_BLIP_EXIST(SubBlip) and not HUD.DOES_BLIP_EXIST(SubControlBlip) then
-                    local PlayerPos = players.get_position(players.user())
-                    local Interior = INTERIOR.GET_INTERIOR_AT_COORDS(PlayerPos.x, PlayerPos.y, PlayerPos.z)
-                    if Interior ~= 281345 then
-                        NOTIFY(TRANSLATE("Waiting for requesting Kosatka..."))
-                        local CommandRef = menu.ref_by_command_name("hcreq")
-                        menu.trigger_command(CommandRef, "kosatka")
-                        util.arspinner_enable()
-                        repeat util.yield_once() until HUD.DOES_BLIP_EXIST(SubBlip)
-                        util.arspinner_disable()
+                if not IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE() then
+                    SET_INT_GLOBAL(2739811 + 991, 1) -- Request Kosatka [[update]]
+                    NOTIFY(TRANSLATE("Waiting for requesting Kosatka..."))
+                    util.arspinner_enable()
+                    while not IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE() do
+                        util.yield()
                     end
+                    util.arspinner_disable()
                 end
-
-                TELEPORT(1561.2369, 385.8831, -49.689915)
-                SET_HEADING(175)
+                ENTITY.FREEZE_ENTITY_POSITION(players.user_ped(),true)
+                TELEPORT(1561.2369, 385.8831, -50.5)
+                repeat
+                    SET_HEADING(175)
+                    util.yield()
+                until INTERIOR.GET_INTERIOR_FROM_ENTITY(players.user_ped()) == 281345
+                ENTITY.FREEZE_ENTITY_POSITION(players.user_ped(),false)
             else
                 NOTIFY(TRANSLATE("You didn't buy the Kosatka yet. Buy it first to teleport!"))
             end
@@ -5349,7 +5380,7 @@ util.yield()
             
         ---
 
-        CUSTOM_MONEY_REMOVER = menu.slider(TUNABLES, TRANSLATE("Custom Money Remover"), {"hcmoneyremove"}, TRANSLATE("The best way to remove GTA Online banked money up to $2B at once!"), 0, 2000000000, 5000, 10000, function(Value)
+        CUSTOM_MONEY_REMOVER = menu.click_slider(TUNABLES, TRANSLATE("Custom Money Remover"), {"hcmoneyremove"}, TRANSLATE("The best way to remove GTA Online banked money up to $2B at once!"), 0, 2000000000, 5000, 10000, function(Value)
             menu.show_warning(TUNABLES, CLICK_MENU, TRANSLATE("Do you sure remove your money?"), function()
                 SET_INT_TUNABLE_GLOBAL(-156036296, Value) -- https://www.unknowncheats.me/forum/3276092-post3.html
                 SET_PACKED_STAT_BOOL_CODE(15382, true) -- Makes able to buy the Ballistic Armor
@@ -5357,7 +5388,7 @@ util.yield()
 
                 menu.trigger_commands("nopimenugrey on")
                 if util.is_interaction_menu_open() then PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 244, 1) end
-                SET_INT_GLOBAL(2711018, 85) -- Renders Ballistic Equipment Services screen of the Interaction Menu [[update]]
+                SET_INT_GLOBAL(2711019, 85) -- Renders Ballistic Equipment Services screen of the Interaction Menu [[update]]
                 PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 244, 1) -- Presses M
                 PAD.SET_CONTROL_VALUE_NEXT_FRAME(0, 176, 1) -- Presses Enter
                 NOTIFY(TRANSLATE("Because this feature works via requesting the Ballistic Armor, it'll be dropped nearby soon."))
@@ -5407,18 +5438,24 @@ util.yield()
         menu.divider(INSTANT_FINISH, TRANSLATE("Others"))
 
             menu.action(INSTANT_FINISH, TRANSLATE("Bunker"), {"hcinsfinbk"}, TRANSLATE("(Selling Only)"), function() -- https://www.unknowncheats.me/forum/3521137-post39.html
-                SET_INT_LOCAL("gb_gunrunning", 1262 + 774, 0) -- [[update]]
+                if REQUEST_TO_BE_HOST("gb_gunrunning") then
+                    SET_INT_LOCAL("gb_gunrunning", 1262 + 774, 0) -- [[update]]
+                end
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Air Cargo"), {"hcinsfinac"}, TRANSLATE("(Selling Only)"), function() -- https://www.unknowncheats.me/forum/3513482-post37.html
-                SET_INT_LOCAL("gb_smuggler", 1985 + 1035, GET_INT_LOCAL("gb_smuggler", 1934 + 1078)) -- [[update]]
+                if REQUEST_TO_BE_HOST("gb_smuggler") then
+                    SET_INT_LOCAL("gb_smuggler", 1985 + 1035, GET_INT_LOCAL("gb_smuggler", 1934 + 1078)) -- [[update]]
+                end
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Acid Lab"), {"hcinsfinacid"}, TRANSLATE("(Selling Only)"), function() -- https://www.unknowncheats.me/forum/3641612-post76.html
+                if REQUEST_TO_BE_HOST("fm_content_acid_lab_sell") then
                 -- [[update]]
-                SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1374 + 2, 9)
-                SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1374 + 3, 10)
-                SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1308, 2)
+                    SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1374 + 2, 9)
+                    SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1374 + 3, 10)
+                    SET_INT_LOCAL("fm_content_acid_lab_sell", 5653 + 1308, 2)
+                end
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Headhunter"), {"hcinsfinhh"}, "", function() -- Thanks to @stand.gg on Discord helping me code this
@@ -5435,7 +5472,9 @@ util.yield()
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Sightseer"), {"hcinsfinss"}, "", function() -- https://www.unknowncheats.me/forum/3488056-post24.html
-                SET_INT_LOCAL("gb_sightseer", 256 + 1 + NETWORK.PARTICIPANT_ID_TO_INT() * 6 + 5, 3) -- [[update]]
+                if REQUEST_TO_BE_HOST("gb_sightseer") then
+                    SET_INT_LOCAL("gb_sightseer", 256 + 1 + NETWORK.PARTICIPANT_ID_TO_INT() * 6 + 5, 3) -- [[update]]
+                end
             end)
             
         ---
@@ -5807,7 +5846,7 @@ util.yield()
                     local PedPos = ENTITY.GET_ENTITY_COORDS(ped)
                     local AddPos = ENTITY.GET_ENTITY_COORDS(ped)
                     AddPos.z = AddPos.z + 0.5
-                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, PedPos.x, PedPos.y, PedPos.z, 1000, false, weapon_hash, players.user_ped(), false, true, 1000)
+                    MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, PedPos.x, PedPos.y, PedPos.z, 1000, true, weapon_hash, players.user_ped(), false, true, 1000)
                     ::out::
                 end
             end)
@@ -5843,15 +5882,26 @@ util.yield()
                             local CamPos = entities.get_position(ent)
                             local AddPos = entities.get_position(ent)
                             AddPos.z = AddPos.z + 0.5
-                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 20, true, weapon_hash, players.user_ped(), false, true, 1000)
+                            MISC.SHOOT_SINGLE_BULLET_BETWEEN_COORDS(AddPos.x, AddPos.y, AddPos.z, CamPos.x, CamPos.y, CamPos.z, 1, true, weapon_hash, players.user_ped(), false, true, 1000)
                         end
                     end
                 end
             end)
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Delete"), {"hcdelcam"}, "", function()
-                for _, cam in pairs(AllCamLists) do
-                    DELETE_OBJECT_BY_HASH(cam)
+                if IS_CURRENT_MISSION_CASINO_HEIST_FINALE() then  -- If you're in the casino heist, it seems that for some reason you can't directly delete the cameras
+                    for entities.get_all_objects_as_pointers() as obj do
+                        for AllCamLists as cam_hash do
+                            if entities.get_model_hash(obj) == cam_hash and entities.request_control(obj, 3000) then
+                                local camera = entities.pointer_to_handle(obj)
+                                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(camera, -8271.156, -1293.2153, -100, false, false, false)
+                            end
+                        end
+                    end
+                else
+                    for _, cam in pairs(AllCamLists) do
+                        DELETE_OBJECT_BY_HASH(cam)
+                    end
                 end
             end)
 
@@ -7031,25 +7081,11 @@ util.yield()
                         HUD.LOCK_MINIMAP_POSITION(TPs[i][j][2].x, TPs[i][j][2].y)
                         local BeaconPos = v3.new(TPs[i][j][2].x, TPs[i][j][2].y, TPs[i][j][2].z)
                         util.draw_ar_beacon(BeaconPos)
+                        is_minimap_locked = true
                     end
-                end)
-            else
-                menu.on_tick_in_viewport(TPs[i][j][1], function()
-                    HUD.UNLOCK_MINIMAP_POSITION()
                 end)
             end
         end
-    end
-
-    TPPlaces = {
-        TELEPORT_CP,
-        TELEPORT_CAH,
-        TELEPORT_DOOMS,
-    }
-    for _, list in pairs(TPPlaces) do
-        menu.on_tick_in_viewport(list, function()
-            HUD.UNLOCK_MINIMAP_POSITION()
-        end)
     end
 
 ---
