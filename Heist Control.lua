@@ -1650,7 +1650,7 @@ util.yield()
                 repeat
                     SET_HEADING(175)
                     util.yield()
-                until INTERIOR.GET_INTERIOR_FROM_ENTITY(players.user_ped()) == 281345
+                until INTERIOR.GET_INTERIOR_FROM_ENTITY(players.user_ped()) == 281345 or util.is_session_transition_active()
                 ENTITY.FREEZE_ENTITY_POSITION(players.user_ped(),false)
             else
                 NOTIFY(TRANSLATE("You didn't buy the Kosatka yet. Buy it first to teleport!"))
