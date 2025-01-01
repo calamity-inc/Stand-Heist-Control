@@ -602,12 +602,9 @@
             end
             return false
         end
-        
+
         function IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE()
-            if GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 then -- [[update]]
-                return true
-            end
-            return false
+            return GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 -- [[update]]
         end
 		
         function IS_CURRENT_MISSION_CASINO_HEIST_FINALE()
