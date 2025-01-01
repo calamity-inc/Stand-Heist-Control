@@ -574,7 +574,7 @@
                     repeat
                         util.request_script_host(script_name)
                         util.yield()
-                    until IS_HOST_OF_THIS_SCRIPT(script_name) or util.current_time_millis() > st_time or not IS_SCRIPT_ACTIVE(script_name)
+                    until IS_HOST_OF_THIS_SCRIPT(script_name) or util.current_time_millis() > timeout or not IS_SCRIPT_ACTIVE(script_name)
                     return IS_HOST_OF_THIS_SCRIPT(script_name)
                 else
                     return true
