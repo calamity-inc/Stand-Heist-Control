@@ -2640,11 +2640,11 @@ util.yield()
         ---
 
         menu.toggle_loop(CAH_ADVCED, TRANSLATE("Skip The Hacking Process"), {}, TRANSLATE("Works On Both: Fingerprint and Keypad"), function()
-            if GET_INT_LOCAL("fm_mission_controller", 53087) ~= 1 then -- For Fingerprint, https://www.unknowncheats.me/forum/3418914-post13398.html
-                SET_INT_LOCAL("fm_mission_controller", 53087, 5) -- [[update]]
+            if GET_INT_LOCAL("fm_mission_controller", 53089) ~= 1 then -- For Fingerprint, https://www.unknowncheats.me/forum/3418914-post13398.html
+                SET_INT_LOCAL("fm_mission_controller", 53089, 5) -- [[update]]
             end
-            if GET_INT_LOCAL("fm_mission_controller", 54153) ~= 1 then -- For Keypad, https://www.unknowncheats.me/forum/3455828-post8.html
-                SET_INT_LOCAL("fm_mission_controller", 54153, 5) -- [[update]]
+            if GET_INT_LOCAL("fm_mission_controller", 54155) ~= 1 then -- For Keypad, https://www.unknowncheats.me/forum/3455828-post8.html
+                SET_INT_LOCAL("fm_mission_controller", 54155, 5) -- [[update]]
             end
         end)
 
@@ -2673,12 +2673,12 @@ util.yield()
         end)
 
         menu.action(CAH_ADVCED, TRANSLATE("Skip Drilling The Vault Door"), {"hccahinsvault"}, "", function() -- https://www.unknowncheats.me/forum/3418914-post13398.html
-            SET_INT_LOCAL("fm_mission_controller", 10143 + 7, GET_INT_LOCAL("fm_mission_controller", 10143 + 37)) -- [[update]]
+            SET_INT_LOCAL("fm_mission_controller", 10145 + 7, GET_INT_LOCAL("fm_mission_controller", 10143 + 37)) -- [[update]]
         end)
 
         menu.action(CAH_ADVCED, TRANSLATE("Increase Team Lives"), {"hccahincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
             if REQUEST_TO_BE_HOST("fm_mission_controller") then
-                SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+                SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
             end
         end)
 
@@ -3427,7 +3427,7 @@ util.yield()
 
     menu.action(DOOMS_HEIST, TRANSLATE("Increase Team Lives"), {"hcdoomsincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
         if REQUEST_TO_BE_HOST("fm_mission_controller") then
-            SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
         end
     end)
 
@@ -3485,6 +3485,16 @@ util.yield()
                 ["zCxFg29teE2ReKGnr0L4Bg"] = {{-7900, 2000, 2000, 2000}, {-3900, 1000, 1000, 1000}, {-3100, 800, 800, 800}} -- Pacific Standard Job
             }
 
+            if FIX_CUTS_DURING_2X.value then
+                for heistID, parentTable in HeistData do
+                    for _, childTable in parentTable do
+                        for index, value in childTable do
+                            childTable[index] //= 2
+                        end 
+                    end
+                end
+            end
+
             local SetCuts = HeistData[HeistID]
             if SetCuts then
                 local PlayerCut = SetCuts[Difficulty + 1]
@@ -3513,6 +3523,7 @@ util.yield()
             end
         end)
 
+        FIX_CUTS_DURING_2X = menu.toggle(CLASSIC_PRESETS, TRANSLATE("Fix cuts during 2X money events"), {}, TRANSLATE("Toggle before setting a preset."), function () end)
     ---
 
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Remove The Cooldown"), {}, TRANSLATE("This doesn't bypass server-sided cooldown time, 20 mins. This just bypasses unable to launch heist in heist board."), function()
@@ -3520,12 +3531,12 @@ util.yield()
     end)
 
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Skip The Hacking Process"), {}, "(" .. TRANSLATE("Fleeca Heist") .. " & " .. TRANSLATE("Pacific Standard Heist") .. ")", function()
-        SET_INT_LOCAL("fm_mission_controller", 11812 + 24, 7) -- Fleeca Heist, https://www.unknowncheats.me/forum/3455828-post8.html [[update]]
-        SET_LOCAL_BIT("fm_mission_controller", 9809, 9) -- Pacific Standard Heist, https://www.unknowncheats.me/forum/3694259-post117.html [[update]]
+        SET_INT_LOCAL("fm_mission_controller", 11814 + 24, 7) -- Fleeca Heist, https://www.unknowncheats.me/forum/3455828-post8.html [[update]]
+        SET_LOCAL_BIT("fm_mission_controller", 9811, 9) -- Pacific Standard Heist, https://www.unknowncheats.me/forum/3694259-post117.html [[update]]
     end)
 
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Skip Drilling"), {}, "(" .. TRANSLATE("Fleeca Heist") .. ")", function()
-        SET_FLOAT_LOCAL("fm_mission_controller", 10103 + 11, 100) -- https://www.unknowncheats.me/forum/3485435-post19.html [[update]]
+        SET_FLOAT_LOCAL("fm_mission_controller", 10105 + 11, 100) -- https://www.unknowncheats.me/forum/3485435-post19.html [[update]]
     end)
 
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Force Challenges Bonus"), {}, TRANSLATE("Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends."), function() -- Big thanks to @negotium.rpm on Discord
@@ -3638,7 +3649,7 @@ util.yield()
 
     menu.action(CLASSIC_HEISTS, TRANSLATE("Increase Team Lives"), {"hcclassicincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
         if REQUEST_TO_BE_HOST("fm_mission_controller") then
-            SET_INT_LOCAL("fm_mission_controller", 19781 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+            SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
         end
     end)
 
@@ -5408,22 +5419,22 @@ util.yield()
             menu.action(INSTANT_FINISH, TRANSLATE("Casino / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money."), function()
                 if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1062, 5)  -- Instant Finish for the "Silent and Sneaky" and "BigCon" and "Pacific Standard" heists
-                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1740 + 1, 80) -- Casino Aggressive Kills & Act 3
-                    SET_INT_LOCAL("fm_mission_controller", 19781 + 2686, 10000000) -- How much did you take in the casino and pacific standard heist
-                    SET_INT_LOCAL("fm_mission_controller", 28400 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
-                    SET_INT_LOCAL("fm_mission_controller", 31656 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 19783 + 1062, 5)  -- Instant Finish for the "Silent and Sneaky" and "BigCon" and "Pacific Standard" heists
+                    SET_INT_LOCAL("fm_mission_controller", 19783 + 1740 + 1, 80) -- Casino Aggressive Kills & Act 3
+                    SET_INT_LOCAL("fm_mission_controller", 19783 + 2686, 10000000) -- How much did you take in the casino and pacific standard heist
+                    SET_INT_LOCAL("fm_mission_controller", 28402 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 31658 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
                 end
             end)
 
             menu.action(INSTANT_FINISH, TRANSLATE("Doomsday"), {"hcinsfindooms"}, TRANSLATE("Note that you may press multiple times to instant finish the heist."), function()
                 if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                    SET_INT_LOCAL("fm_mission_controller", 19781, 12) -- ???, 'fm_mission_controller' instant finish variable?
-                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1740 + 1, 150) -- Casino Aggressive Kills & Act 3
-                    SET_INT_LOCAL("fm_mission_controller", 28400 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
-                    SET_INT_LOCAL("fm_mission_controller", 31656 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
-                    SET_INT_LOCAL("fm_mission_controller", 19781 + 1725 + 1, 80) -- Act 1 Kills
+                    SET_INT_LOCAL("fm_mission_controller", 19783, 12) -- ???, 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 19783 + 1740 + 1, 150) -- Casino Aggressive Kills & Act 3
+                    SET_INT_LOCAL("fm_mission_controller", 28402 + 1, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 31658 + 1 + 68, 99999) -- 'fm_mission_controller' instant finish variable?
+                    SET_INT_LOCAL("fm_mission_controller", 19783 + 1725 + 1, 80) -- Act 1 Kills
                 end
             end)
             
