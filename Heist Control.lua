@@ -706,7 +706,7 @@
         PERICO_HEIST = menu.list(menu.my_root(), TRANSLATE("Cayo Perico Heist"), {"hccp"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Under $2.550.000 per run") .. "\n" .. TRANSLATE("- Under $4.100.000 per hour") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function();  end)
         CASINO_HEIST = menu.list(menu.my_root(), TRANSLATE("Diamond Casino Heist"), {"hccah"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Under $3.650.000 per run") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function(); end)
         DOOMS_HEIST = menu.list(menu.my_root(), TRANSLATE("Doomsday Heist"), {"hcdooms"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Under $2.550.000 per run") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function(); end)
-        CLASSIC_HEISTS = menu.list(menu.my_root(), TRANSLATE("Classic Heist"), {"hcclassic"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Fleeca Heist ~ Pacific Standard Heist: Under $15.000.000 per run") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function(); end)
+        CLASSIC_HEISTS = menu.list(menu.my_root(), TRANSLATE("Classic Heist"), {"hcclassic"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Fleeca Heist ~ Pacific Standard Heist: Under $3.000.000 per run") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function(); end)
         ROBBERYS = menu.list(menu.my_root(), TRANSLATE("Robberies"), {"hcrob"}, "", function(); end)
         MISSONS = menu.list(menu.my_root(), TRANSLATE("Missions"), {"hcmission"}, "", function(); end)
         MASTER_UNLOCKER = menu.list(menu.my_root(), TRANSLATE("Master Unlocker"), {"hcmu"}, "", function(); end)
@@ -3466,7 +3466,7 @@ util.yield()
 
     CLASSIC_PRESETS = menu.list(CLASSIC_HEISTS, TRANSLATE("Automated Presets"), {}, TRANSLATE("Compatible with any classic heist and any difficulty level.") .. "\n\n" .. TRANSLATE("Note that you should use this feature when you're on the planning board after watching or skipping the cutscene. It only works if you are host of the heist."), function(); end)
 
-        menu.textslider_stateful(CLASSIC_PRESETS, TRANSLATE("Automated Presets"), {"hcclassicpreset"}, TRANSLATE("- Option 1: Each player will receive $15.000.000") .. "\n" .. TRANSLATE("- Option 2: Only other players will receive $15.000.000"), { -- Big thanks to @negotium.rpm on Discord
+        menu.textslider_stateful(CLASSIC_PRESETS, TRANSLATE("Automated Presets"), {"hcclassicpreset"}, TRANSLATE("- Option 1: Each player will receive $3.000.000") .. "\n" .. TRANSLATE("- Option 2: Only other players will receive $3.000.000"), { -- Big thanks to @negotium.rpm on Discord
             TRANSLATE("Option 1"),
             TRANSLATE("Option 2"),
         }, function(index)
@@ -3485,14 +3485,20 @@ util.yield()
                 ["zCxFg29teE2ReKGnr0L4Bg"] = {{-7900, 2000, 2000, 2000}, {-3900, 1000, 1000, 1000}, {-3100, 800, 800, 800}} -- Pacific Standard Job
             }
 
-            if FIX_CUTS_DURING_2X.value then
+            local function divide_cuts(n)
                 for heistID, parentTable in HeistData do
                     for _, childTable in parentTable do
                         for index, value in childTable do
-                            childTable[index] //= 2
+                            childTable[index] //= n
                         end 
                     end
                 end
+            end
+
+            divide_cuts(5)
+
+            if FIX_CUTS_DURING_2X.value then
+                divide_cuts(2)
             end
 
             local SetCuts = HeistData[HeistID]

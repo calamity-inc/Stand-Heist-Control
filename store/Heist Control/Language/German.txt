@@ -632,7 +632,7 @@ If you have any questions regarding Heist Control? Joining it will help you so m
 But, all features of HC should work without any patches! = Alle Features von HC sollten aber funktionieren.
 HC is needed to be patched by the developer. Please be patient. = HC funktioniert grade nicht und braucht ein Update des Entwicklers. Bitte warte auf das Update.
 You won't get money if you don't keep money limitation! = Du kriegst gar kein Geld, wenn du dich nicht an die Geld-Limits hältst!
-- Fleeca Heist ~ Pacific Standard Heist: Under $15.000.000 per run = - Fleeca Heist ~ Pacific Standard Heist: Unter 15.000.000$ pro Run
+- Fleeca Heist ~ Pacific Standard Heist: Under $3.000.000 per run = - Fleeca Heist ~ Pacific Standard Heist: Unter 3.000.000$ pro Run
 Robberies = Überfälle
 There is only a primary target, depends on which you selected. All players of the heist session can get the max payout ($2.45M) by only getting it. = Es gibt nur ein Primärziel, das du ausgewählt hast. Alle Spieler können die maximale Auszahlung (2,45 Mio $) bekommen, auch wenn sie nur das nehmen.
 Note that works on best when you are alone in your session. = Dies funktioniert am besten, wenn du alleine in der Session bist.

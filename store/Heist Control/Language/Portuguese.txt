@@ -641,7 +641,7 @@ Please re-enable 'Stand > Lua Scripts > Repository > natives-1681379138' or plea
 But, all features of HC should work without any patches! = Contudo, todos os recursos do HC devem funcionar sem problemas!
 HC is needed to be patched by the developer. Please be patient. = HC está em processo de atualização pelo desenvolvedor. Por favor, tenha paciência.
 You won't get money if you don't keep money limitation! = Você não receberá dinheiro se não mantiver a limitação do dinheiro!
-- Fleeca Heist ~ Pacific Standard Heist: Under $15.000.000 per run = - Golpe do Fleeca ~ Golpe do Pacific Standard: Menos de $15.000.000 por golpe
+- Fleeca Heist ~ Pacific Standard Heist: Under $3.000.000 per run = - Golpe do Fleeca ~ Golpe do Pacific Standard: Menos de $3.000.000 por golpe
 Robberies = Roubos
 There is only a primary target, depends on which you selected. All players of the heist session can get the max payout ($2.45M) by only getting it. = Só há um alvo principal, dependendo do que você selecionou. Todos os membros do golpe podem obter o pagamento máximo ($2.45M) apenas pegando o alvo principal.
 Note that works on best when you are alone in your session. = Isso funciona melhor quando você está sozinho na sessão.
