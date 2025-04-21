@@ -1,6 +1,6 @@
 # DON'T REMOVE '#', OTHERWISE WILL CAUSE ERRORS!
 
-# Generated Date: 12/23/2024 07:17:14 PM
+# Generated Date: 04/21/2024 23:07:14 PM
 # Heist Control Version: V 3.4.5
 
 # Thank you for translating Heist Control!
@@ -730,3 +730,5 @@ It seems that you are currently not in any apartment. = 你目前似乎不在任
 The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = 无法在当前公寓找到抢劫面板. 请确保你在高端公寓里.
 Unlock All Classic Heists = 解锁所有公寓抢劫
 Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = 解锁策划面板上的所有抢劫. 还会将所有教程标记为已完成,并允许你跳过过场动画. 使用后,将自动返回故事模式以应用更改.
+Fix cuts during 2X money events = 双倍奖励活动分红调整
+Toggle before setting a preset. = 在设置预设前启用.
