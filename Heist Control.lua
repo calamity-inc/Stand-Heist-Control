@@ -3547,13 +3547,13 @@ util.yield()
 
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Force Challenges Bonus"), {}, TRANSLATE("Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends."), function() -- Big thanks to @negotium.rpm on Discord
         -- Force All In Order
-        STAT_SET_INT("MPPLY_HEISTFLOWORDERPROGRESS", 134217727)
+        STAT_SET_INT("MPPLY_HEISTFLOWORDERPROGRESS", 201326591)
         STAT_SET_BOOL("MPPLY_AWD_HST_ORDER", false)
         -- Force Loyalty
-        STAT_SET_INT("MPPLY_HEISTTEAMPROGRESSBITSET", 134217727)
+        STAT_SET_INT("MPPLY_HEISTTEAMPROGRESSBITSET", 201326591)
         STAT_SET_BOOL("MPPLY_AWD_HST_SAME_TEAM", false)
         -- Force Criminal Mastermind
-        STAT_SET_INT("MPPLY_HEISTNODEATHPROGREITSET", 134217727)
+        STAT_SET_INT("MPPLY_HEISTNODEATHPROGREITSET", 201326591)
         STAT_SET_BOOL("MPPLY_AWD_HST_ULT_CHAL", false)
     end, function()
         -- Complete All In Order
