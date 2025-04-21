@@ -718,7 +718,7 @@ Note that you should use this feature when you're on the planning board after wa
 Option 1 = 选项 1
 Option 2 = 选项 2
 Force Challenges Bonus = 强制完成挑战奖励
-Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. = 允许你在完成太平洋标准差事终章(困难模式)后额外获得1200万. 注意:即使你不是主持人也对你生效,但也只对你有效. 在任务开始前启用并保持到任务结束.
+Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. = 允许你在完成太平洋标准差事终章(困难模式)后额外获得1200万. 注意:只对你生效, 即使你不是主持人. 在任务开始前启用并保持到任务结束.
 Complete All Setups = 完成所有前置
 Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly. After using, you will automatically be returned to Story Mode to apply the changes. = 完成所选抢劫的所有前置任务. 注意:你必须在公寓中才能使用此功能. 使用后,将自动返回到故事模式以应用更改.
 Fleeca Job = 全福银行差事
