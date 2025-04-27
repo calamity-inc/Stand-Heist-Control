@@ -38,7 +38,5 @@ Heist Control for Stand focuses helping play heists in GTA Online, provides some
 
 ## Note
 
-> NOTE: Please don't create Pull Requests. I will reject all of them.
-
 - [IceDoomfist](https://www.unknowncheats.me/forum/members/3763225.html) on UnknownCheats
 - [jhowkNx](https://www.unknowncheats.me/forum/members/1634082.html) on UnknownCheats
