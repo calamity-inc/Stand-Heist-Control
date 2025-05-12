@@ -1639,8 +1639,10 @@ util.yield()
         ---
 
         TELEPORT_CP_KOSATKA = menu.action(TELEPORT_CP, TRANSLATE("Kosatka: Heist Board"), {"hctpsub"}, TRANSLATE("Note that works on best when you are alone in your session."), function()
+            local function IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE()
+                return GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 -- [[update]]
+            end
             if STAT_GET_INT("IH_SUB_OWNED") ~= 0 then
-                local IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE = GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 -- [[update]]
                 if not IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE() then
                     SET_INT_GLOBAL(2739811 + 991, 1) -- Request Kosatka [[update]]
                     NOTIFY(TRANSLATE("Waiting for requesting Kosatka..."))
@@ -5038,7 +5040,7 @@ util.yield()
 --- Tools
 util.yield()
 
-    menu.toggle_loop(TOOLS, TRANSLATE("Allow Solo Heist"), {"soloheist"}, TRANSLATE("Allows you to play all heist missions solo.") .. "\n" .. TRANSLATE("Enable before starting the heist and keep it enabled until the heist is done."), function()
+    menu.toggle_loop(TOOLS, TRANSLATE("Allow Solo Heist"), {"soloheist"}, TRANSLATE("Allows you to play all heist missions solo. Enable before starting the heist and keep it enabled until the heist is done."), function()
         -- [[update]]
         SET_INT_GLOBAL(2635079 + 1, 0)  -- Clear the cooldown to prevent the apartment’s heist planning board from appearing blank.
 
