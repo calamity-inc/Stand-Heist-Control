@@ -5109,8 +5109,8 @@ util.yield()
     end)
 
     menu.action(TOOLS, TRANSLATE("Skip to Next Objective"), {"skipnextobj"}, TRANSLATE("Skip the current mission stage if it's blocked by missing players. Useful for solo runs when a teammate is required to open a door or reach a location."), function()
-        -- credits to @rostal315 for sharing the code
-        local function set_bits(script, base_offset)
+        -- [[update]]
+        local function set_bits(script, base_offset)    -- credits to @rostal315 for sharing the locals he discovered
             SET_LOCAL_BIT(script, base_offset + 2, 10)
             SET_LOCAL_BIT(script, base_offset + 2, 17)
             SET_LOCAL_BIT(script, base_offset + 2, 18)
