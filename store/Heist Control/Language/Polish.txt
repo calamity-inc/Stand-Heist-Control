@@ -732,7 +732,7 @@ Motorbike = Motocykl Dostawczy
 
 
 Increase Team Lives = Zwiększ Życia Drużyny
-Increases the amount of team lives. Make sure to have script host if it doesn't seem to work. = Zwiększa liczbę żyć drużyny. Upewnij się, że jesteś hostem skryptu, jeśli ta funkcja wydaje się nie działać.
+Increases the amount of team lives. = Zwiększa liczbę żyć drużyny.
 I Wanna Receive The Heist Payout = Otrzymaj Wynagrodzenie za Napad
 Enabled: Each player will receive $15M = Włączone: Każdy gracz otrzyma 15,000,000$.
 Disabled: For except me, only other players will receive $15M = Wyłączone: Tylko pozostali gracze otrzymają 15,000,000$.

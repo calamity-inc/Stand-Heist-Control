@@ -732,7 +732,7 @@ Set Crew Level = Crewlevel setzen
 
 
 Increase Team Lives = Team-Leben erhöhen
-Increases the amount of team lives. Make sure to have script host if it doesn't seem to work. = Erhöht die Anzahl der Leben, die dein Team zur Verfügung hat. Wenn etwas nicht richtig funktioniert, nimm dir Script Host.
+Increases the amount of team lives. = Erhöht die Anzahl der Leben.
 I Wanna Receive The Heist Payout = Ich möchte den Heist-Payout bekommen
 Enabled: Each player will receive $15M = Aktiviert: Jeder Spieler wird 15 Mio $ erhalten.
 Disabled: For except me, only other players will receive $15M = Deaktiviert: Nur andere Spieler werden die 15 Mio $ erhalten, nicht du

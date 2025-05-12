@@ -38,7 +38,7 @@
 
     --- Important
 
-        HC_VERSION = "V 3.4.5"
+        HC_VERSION = "V 3.4.6"
         CODED_GTAO_VERSION = 1.70 -- b3407
 
     ---
@@ -133,6 +133,15 @@
         function SET_INT_GLOBAL(global, value)
             memory.write_int(memory.script_global(global), value)
         end
+
+        function SET_BOOL_GLOBAL(global, bool)
+            memory.write_int(memory.script_global(global), bool and 1 or 0)
+        end
+
+        function SET_STR_GLOBAL(global, str)
+            memory.write_string(memory.script_global(global), str)
+        end
+
         function SET_INT_TUNABLE_GLOBAL(hash, value)
             memory.write_int(memory.script_global(262145 + memory.tunable_offset(hash)), value)
         end
@@ -602,10 +611,6 @@
             end
             return false
         end
-
-        function IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE()
-            return GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 -- [[update]]
-        end
 		
         function IS_CURRENT_MISSION_CASINO_HEIST_FINALE()
             return GET_INT_GLOBAL(2684718 + 21) == 1 -- [[update]]
@@ -676,6 +681,8 @@
 
         TPs = {}
         local is_minimap_locked = false
+        local active_casino_preset_toggle = nil
+        local active_doomsday_preset_toggle = nil
         util.create_tick_handler(function()
             if is_minimap_locked and not HAS_TELEPORT_OPTION_FOCUS() or is_minimap_locked and not menu.is_open() then
                 HUD.UNLOCK_MINIMAP_POSITION()
@@ -1633,6 +1640,7 @@ util.yield()
 
         TELEPORT_CP_KOSATKA = menu.action(TELEPORT_CP, TRANSLATE("Kosatka: Heist Board"), {"hctpsub"}, TRANSLATE("Note that works on best when you are alone in your session."), function()
             if STAT_GET_INT("IH_SUB_OWNED") ~= 0 then
+                local IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE = GET_INT_GLOBAL(2657991 + 1 + (players.user() * 467) + 324 + 4) & (1 << 31) ~= 0 -- [[update]]
                 if not IS_LOCAL_PLAYER_SUBMARINE_IN_FREEMODE() then
                     SET_INT_GLOBAL(2739811 + 991, 1) -- Request Kosatka [[update]]
                     NOTIFY(TRANSLATE("Waiting for requesting Kosatka..."))
@@ -1784,15 +1792,20 @@ util.yield()
             SET_INT_GLOBAL(1973526 + 1 + (3 * 27) + 8 + 3, 1) 
         end)
 
+        menu.action(PERICO_ADV, TRANSLATE("Open All Locked Doors"), {""}, TRANSLATE(""), function()
+            if IS_SCRIPT_ACTIVE("fm_mission_controller_2020") then
+                local valid_door_ids = {0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,21,22,28,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}
+                for _, pid in ipairs(players.list_except()) do
+                    for _, id in ipairs(valid_door_ids) do 
+                	    util.trigger_script_event(1 << pid, {-859331176, pid,pid,2,id,0})
+                    end
+                end
+            end
+        end)
+
         menu.action(PERICO_ADV, TRANSLATE("Obtain The Primary Target"), {"hccpfintar"}, "(" .. TRANSLATE("Cayo Perico Heist") .. " > " .. TRANSLATE("Teleport Places") .. " > " .. TRANSLATE("Compound") .. " > " .. TRANSLATE("Primary Target") .. ")", function() -- https://www.unknowncheats.me/forum/3418914-post13398.html
             SET_INT_LOCAL("fm_mission_controller_2020", 31048, 5) -- CutterStage [[update]]
             SET_INT_LOCAL("fm_mission_controller_2020", 31049, 3) -- BitCheck
-        end)
-
-        menu.action(PERICO_ADV, TRANSLATE("Increase Team Lives"), {"hccpincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-            if REQUEST_TO_BE_HOST("fm_mission_controller_2020") then
-                SET_INT_LOCAL("fm_mission_controller_2020", 58874 + 1109 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
-            end
         end)
 
         menu.action(PERICO_ADV, TRANSLATE("Remove The Drainage Pipe"), {"hccprempipe"}, "(" .. TRANSLATE("Cayo Perico Heist") .. " > " .. TRANSLATE("Teleport Places") .. " > " .. TRANSLATE("Island") .. " > " .. TRANSLATE("Drainage Pipe") .. ")", function()
@@ -2238,337 +2251,330 @@ util.yield()
         memory.tunable_offset(1277889925),
         memory.tunable_offset(-582734553),
     }
+    
     CASINO_PRESETS = menu.list(CASINO_HEIST, TRANSLATE("Automated Presets"), {}, TRANSLATE("Please don't forget that BUYER should be selected LOW! Otherwise, won't get money."), function(); end)
 
-        CASINO_PRESETS_DIAMOND = menu.list(CASINO_PRESETS, TRANSLATE("Diamonds"), {}, TRANSLATE("If the Heist Planning (Board 3) is empty, then please re-enable the preset that you enabled!"), function(); end)
+        CASINO_PRESETS_DIAMOND = menu.list(CASINO_PRESETS, TRANSLATE("Diamonds"), {}, "", function(); end)
 
-            DIAMOND_SS = menu.toggle(CASINO_PRESETS_DIAMOND, TRANSLATE("Silent & Sneaky Approach"), {"hccahdiasil"}, "", function()
-                if menu.get_value(DIAMOND_SS) then
+            DIAMOND_SS = menu.toggle_loop(CASINO_PRESETS_DIAMOND, TRANSLATE("Silent & Sneaky Approach"), {"hccahdiasil"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= DIAMOND_SS then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    DIAMOND_SS.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 4)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3_LAST_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_APPROACH", 1)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_TARGET", 3)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_BITSET1", 127)
-                    STAT_SET_INT("H3OPT_BITSET0", 262270)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 4)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("H3OPT_VEHS", 3)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3_LAST_APPROACH", 0)
+                STAT_SET_INT("H3OPT_APPROACH", 1)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_TARGET", 3)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_BITSET1", 127)
+                STAT_SET_INT("H3OPT_BITSET0", 262270)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_SS then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(DIAMOND_SS)) .. " > " .. menu.get_menu_name(DIAMOND_SS))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_SS then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = DIAMOND_SS
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == DIAMOND_SS then 
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
                 end
-
-                while menu.get_value(DIAMOND_SS) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
-                end
             end)
 
-            DIAMOND_BA = menu.toggle(CASINO_PRESETS_DIAMOND, TRANSLATE("BigCon Approach"), {"hccahdiabig"}, "", function()
-                if menu.get_value(DIAMOND_BA) then
+            DIAMOND_BA = menu.toggle_loop(CASINO_PRESETS_DIAMOND, TRANSLATE("BigCon Approach"), {"hccahdiabig"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= DIAMOND_BA then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    DIAMOND_BA.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 2)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3_LAST_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_APPROACH", 2)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_TARGET", 3)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_BITSET1", 159)
-                    STAT_SET_INT("H3OPT_BITSET0", 524118)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 2)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("H3OPT_VEHS", 3)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3_LAST_APPROACH", 0)
+                STAT_SET_INT("H3OPT_APPROACH", 2)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_TARGET", 3)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_BITSET1", 159)
+                STAT_SET_INT("H3OPT_BITSET0", 524118)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_BA then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(DIAMOND_BA)) .. " > " .. menu.get_menu_name(DIAMOND_BA))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_BA then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = DIAMOND_BA
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == DIAMOND_BA then
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
-                end
-
-                while menu.get_value(DIAMOND_BA) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
-                end
+                end   
             end)
 
-            DIAMOND_AA = menu.toggle(CASINO_PRESETS_DIAMOND, TRANSLATE("Aggressive Approach"), {"hccahdiaagg"}, "", function()
-                if menu.get_value(DIAMOND_AA) then
+            DIAMOND_AA = menu.toggle_loop(CASINO_PRESETS_DIAMOND, TRANSLATE("Aggressive Approach"), {"hccahdiaagg"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= DIAMOND_AA then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    DIAMOND_AA.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 4)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3_LAST_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_APPROACH", 3)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_TARGET", 3)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_BITSET1", 799)
-                    STAT_SET_INT("H3OPT_BITSET0", 3670102)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 4)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("H3OPT_VEHS", 3)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3_LAST_APPROACH", 0)
+                STAT_SET_INT("H3OPT_APPROACH", 3)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_TARGET", 3)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_BITSET1", 799)
+                STAT_SET_INT("H3OPT_BITSET0", 3670102)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_AA then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(DIAMOND_AA)) .. " > " .. menu.get_menu_name(DIAMOND_AA))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == DIAMOND_AA then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = DIAMOND_AA
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == DIAMOND_AA then
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
-                end
-
-                while menu.get_value(DIAMOND_AA) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
                 end
             end)
 
         ---
 
-        CASINO_PRESETS_GOLD = menu.list(CASINO_PRESETS, TRANSLATE("Gold"), {}, TRANSLATE("If the Heist Planning (Board 3) is empty, then please re-enable the preset that you enabled!"), function(); end)
-
-            GOLD_SS = menu.toggle(CASINO_PRESETS_GOLD, TRANSLATE("Silent & Sneaky Approach"), {"hccahgoldsil"}, "", function()
-                if menu.get_value(GOLD_SS) then
+        CASINO_PRESETS_GOLD = menu.list(CASINO_PRESETS, TRANSLATE("Gold"), {}, "", function(); end)
+            GOLD_SS = menu.toggle_loop(CASINO_PRESETS_GOLD, TRANSLATE("Silent & Sneaky Approach"), {"hccahgoldsil"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= GOLD_SS then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    GOLD_SS.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 9)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3_LAST_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_APPROACH", 1)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_TARGET", 1)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_BITSET1", 127)
-                    STAT_SET_INT("H3OPT_BITSET0", 262270)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 9)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("H3OPT_VEHS", 3)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3_LAST_APPROACH", 0)
+                STAT_SET_INT("H3OPT_APPROACH", 1)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_TARGET", 1)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_BITSET1", 127)
+                STAT_SET_INT("H3OPT_BITSET0", 262270)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_SS then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(GOLD_SS)) .. " > " .. menu.get_menu_name(GOLD_SS))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_SS then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = GOLD_SS
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == GOLD_SS then
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
                 end
-
-                while menu.get_value(GOLD_SS) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
-                end
             end)
 
-            GOLD_BA = menu.toggle(CASINO_PRESETS_GOLD, TRANSLATE("BigCon Approach"), {"hccahgoldbig"}, "", function()
-                if menu.get_value(GOLD_BA) then
+            GOLD_BA = menu.toggle_loop(CASINO_PRESETS_GOLD, TRANSLATE("BigCon Approach"), {"hccahgoldbig"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= GOLD_BA then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    GOLD_BA.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 9)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3_LAST_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_APPROACH", 2)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_TARGET", 1)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_BITSET1", 159)
-                    STAT_SET_INT("H3OPT_BITSET0", 524118)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 9)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("H3OPT_VEHS", 3)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3_LAST_APPROACH", 0)
+                STAT_SET_INT("H3OPT_APPROACH", 2)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_TARGET", 1)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_BITSET1", 159)
+                STAT_SET_INT("H3OPT_BITSET0", 524118)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_BA then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(GOLD_BA)) .. " > " .. menu.get_menu_name(GOLD_BA))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_BA then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = GOLD_BA
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == GOLD_BA then
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
                 end
-
-                while menu.get_value(GOLD_BA) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
-                end
             end)
 
-            GOLD_AA = menu.toggle(CASINO_PRESETS_GOLD, TRANSLATE("Aggressive Approach"), {"hccahgoldagg"}, "", function()
-                if menu.get_value(GOLD_AA) then
+            GOLD_AA = menu.toggle_loop(CASINO_PRESETS_GOLD, TRANSLATE("Aggressive Approach"), {"hccahgoldagg"}, "", function()
+                if active_casino_preset_toggle and active_casino_preset_toggle ~= GOLD_AA then
+                    NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                    GOLD_AA.value = false
+                    return
+                end
+                if STAT_GET_INT("H3_COMPLETEDPOSIX") > 0 then
                     STAT_SET_INT("H3_COMPLETEDPOSIX", -1)
-                    STAT_SET_INT("H3OPT_MASKS", 4)
-                    STAT_SET_INT("H3OPT_WEAPS", 1)
-                    STAT_SET_INT("CAS_HEIST_FLOW", -1)
-                    STAT_SET_INT("H3OPT_APPROACH", 3)
-                    STAT_SET_INT("H3OPT_TARGET", 1)
-                    STAT_SET_INT("H3OPT_POI", 1023)
-                    STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
-                    STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
-                    STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
-                    STAT_SET_INT("H3OPT_KEYLEVELS", 2)
-                    STAT_SET_INT("H3OPT_CREWWEAP", 4)
-                    STAT_SET_INT("H3OPT_CREWDRIVER", 3)
-                    STAT_SET_INT("H3OPT_CREWHACKER", 4)
-                    STAT_SET_INT("H3OPT_BITSET1", 799)
-                    STAT_SET_INT("H3OPT_BITSET0", 3670102)
-                    STAT_SET_INT("H3_HARD_APPROACH", 0)
-                    STAT_SET_INT("H3OPT_VEHS", 3)
+                end
+                STAT_SET_INT("H3OPT_MASKS", 4)
+                STAT_SET_INT("H3OPT_WEAPS", 1)
+                STAT_SET_INT("CAS_HEIST_FLOW", -1)
+                STAT_SET_INT("H3OPT_APPROACH", 3)
+                STAT_SET_INT("H3OPT_TARGET", 1)
+                STAT_SET_INT("H3OPT_POI", 1023)
+                STAT_SET_INT("H3OPT_ACCESSPOINTS", 2047)
+                STAT_SET_INT("H3OPT_DISRUPTSHIP", 3)
+                STAT_SET_INT("H3OPT_BODYARMORLVL", -1)
+                STAT_SET_INT("H3OPT_KEYLEVELS", 2)
+                STAT_SET_INT("H3OPT_CREWWEAP", 4)
+                STAT_SET_INT("H3OPT_CREWDRIVER", 3)
+                STAT_SET_INT("H3OPT_CREWHACKER", 4)
+                STAT_SET_INT("H3OPT_BITSET1", 799)
+                STAT_SET_INT("H3OPT_BITSET0", 3670102)
+                STAT_SET_INT("H3_HARD_APPROACH", 0)
+                STAT_SET_INT("H3OPT_VEHS", 3)
 
+                if not active_casino_preset_toggle then
                     menu.trigger_commands("hccahrefreshboards")
-
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_AA then
-                            CasinoPresetLists[i][2] = true
-                        end
-                    end
                     for i = 1, #ForCasinoPresets do
                         menu.set_help_text(ForCasinoPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(CASINO_PRESETS) .. " > " .. menu.get_menu_name(menu.get_parent(GOLD_AA)) .. " > " .. menu.get_menu_name(GOLD_AA))
                     end
-                else
-                    for i = 1, #CasinoPresetLists do
-                        if CasinoPresetLists[i][1] == GOLD_AA then
-                            CasinoPresetLists[i][2] = false
-                        end
-                    end
+                    active_casino_preset_toggle = GOLD_AA
+                end
+
+
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                for i = 1, #ForCasinoPresets do
+                    menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
+                end
+                    
+            end,function()
+                if active_casino_preset_toggle == GOLD_AA then
+                    active_casino_preset_toggle = nil
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
                     end
                 end
-
-                while menu.get_value(GOLD_AA) do
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
-                    for i = 1, #ForCasinoPresets do
-                        menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
-                    end
-
-                    util.yield_once()
-                end
             end)
-
         ---
 
     ---
@@ -2648,23 +2654,6 @@ util.yield()
             end
         end)
 
-        menu.action(CAH_ADVCED, TRANSLATE("Allow You Play Alone"), {}, TRANSLATE("Allow you play alone this heist without another player.") .. "\n\n" .. TRANSLATE("Press this feature once before launching the heist."), function()
-            -- [[update]]
-            if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= nil then -- https://www.unknowncheats.me/forum/grand-theft-auto-v/463868-modest-menu-lua-scripting-megathread-239.html#google_vignette
-                if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= 0 then
-                    if GET_INT_LOCAL("fmmc_launcher", 19875 + 15) > 1 then
-                        SET_INT_LOCAL("fmmc_launcher", 19875 + 15, 1)
-                        SET_INT_GLOBAL(794744 + 4 + 1 + (GET_INT_LOCAL("fmmc_launcher", 19875 + 34) * 89) + 69, 1)
-                    end
-                    
-                    SET_INT_GLOBAL(4718592 + 3526, 1)
-                    SET_INT_GLOBAL(4718592 + 3527, 1)
-                    SET_INT_GLOBAL(4718592 + 3529 + 1, 1)
-                    SET_INT_GLOBAL(4718592 + 180865 + 1, 0)
-                end
-            end
-        end)
-
         menu.action(CAH_ADVCED, TRANSLATE("Force Ready"), {"hccahforceready"}, TRANSLATE("Forces the players on board to ready."), function() 
             -- [[update]]
             SET_INT_GLOBAL(1969977 + 1 + (1 * 68) + 8 + 1, 1) -- Thanks to @vithiam on Discord
@@ -2676,9 +2665,18 @@ util.yield()
             SET_INT_LOCAL("fm_mission_controller", 10145 + 7, GET_INT_LOCAL("fm_mission_controller", 10143 + 37)) -- [[update]]
         end)
 
-        menu.action(CAH_ADVCED, TRANSLATE("Increase Team Lives"), {"hccahincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-            if REQUEST_TO_BE_HOST("fm_mission_controller") then
-                SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
+        menu.action(CAH_ADVCED, TRANSLATE("Open All Locked Doors"), {""}, TRANSLATE(""), function()
+            if IS_SCRIPT_ACTIVE("fm_mission_controller") then
+                for _, pid in ipairs(players.list_except()) do
+                    for i = 0, GET_INT_LOCAL("fm_mission_controller",19783 + 245) - 1 do
+                        if INTERIOR.GET_ROOM_KEY_FROM_ENTITY(players.user_ped()) == 1929398810 then  -- vault
+                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,1})
+                        else
+                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,0})
+                            util.trigger_script_event(1 << pid, {1262194935, pid,1,i})
+                        end
+                    end
+                end
             end
         end)
 
@@ -3149,135 +3147,123 @@ util.yield()
 
     DOOMS_PRESETS = menu.list(DOOMS_HEIST, TRANSLATE("Automated Presets"), {"hcdoomspreset"}, TRANSLATE("You should enable the preset until the end of the heist!") .. "\n\n" .. TRANSLATE("Enabling one of these presets will complete all of setups, and set as max payout, $2.55 Millions. It will be affected to all of heist players."), function(); end)
 
-        DOOMS_PRESETS_ACT1 = menu.toggle(DOOMS_PRESETS, TRANSLATE("ACT I - The Data Breaches"), {"hcdoomsact1"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
-            if menu.get_value(DOOMS_PRESETS_ACT1) then
-                STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 503)
-                STAT_SET_INT("GANGOPS_HEIST_STATUS", -229383)
-                STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+        DOOMS_PRESETS_ACT1 = menu.toggle_loop(DOOMS_PRESETS, TRANSLATE("ACT I - The Data Breaches"), {"hcdoomsact1"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
+            if active_doomsday_preset_toggle and active_doomsday_preset_toggle ~= DOOMS_PRESETS_ACT1 then
+                NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                DOOMS_PRESETS_ACT1.value = false
+                return
+            end
 
+            STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 503)
+            STAT_SET_INT("GANGOPS_HEIST_STATUS", -229383)
+            STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+
+            if not active_doomsday_preset_toggle then    
                 menu.trigger_commands("hcdoomsrefreshscreen")
-
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT1 then
-                        DoomsPresetLists[i][2] = true
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT1
                 for i = 1, #ForDoomsPresets do
                     menu.set_help_text(ForDoomsPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(DOOMS_PRESETS) .. " > " .. menu.get_menu_name(DOOMS_PRESETS_ACT1))
                 end
-            else
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT1 then
-                        DoomsPresetLists[i][2] = false
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT1
+            end
+
+            menu.set_value(DOOMS_NON_HOST_CUT, 209)
+            menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
+            menu.set_value(DOOMS_HOST_CUT, 209)
+            menu.set_value(DOOMS_HOST_CUT_LOOP, true)
+            menu.set_value(DOOMS_2P_CUT, 209)
+            menu.set_value(DOOMS_2P_CUT_LOOP, true)
+            menu.set_value(DOOMS_3P_CUT, 209)
+            menu.set_value(DOOMS_3P_CUT_LOOP, true)
+            menu.set_value(DOOMS_4P_CUT, 209)
+            menu.set_value(DOOMS_4P_CUT_LOOP, true)
+        end,function()
+            if active_doomsday_preset_toggle == DOOMS_PRESETS_ACT1 then
+                active_doomsday_preset_toggle = nil
                 for i = 1, #ForDoomsPresets do
                     menu.apply_default_state(ForDoomsPresets[i][1])
                     menu.set_help_text(ForDoomsPresets[i][1], ForDoomsPresets[i][2])
                 end
             end
-
-            while menu.get_value(DOOMS_PRESETS_ACT1) do
-                menu.set_value(DOOMS_NON_HOST_CUT, 209)
-                menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
-                menu.set_value(DOOMS_HOST_CUT, 209)
-                menu.set_value(DOOMS_HOST_CUT_LOOP, true)
-                menu.set_value(DOOMS_2P_CUT, 209)
-                menu.set_value(DOOMS_2P_CUT_LOOP, true)
-                menu.set_value(DOOMS_3P_CUT, 209)
-                menu.set_value(DOOMS_3P_CUT_LOOP, true)
-                menu.set_value(DOOMS_4P_CUT, 209)
-                menu.set_value(DOOMS_4P_CUT_LOOP, true)
-
-                util.yield_once()
-            end
         end)
 
-        DOOMS_PRESETS_ACT2 = menu.toggle(DOOMS_PRESETS, TRANSLATE("ACT II - The Bogdan Problem"), {"hcdoomsact2"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
-            if menu.get_value(DOOMS_PRESETS_ACT2) then
-                STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 240)
-                STAT_SET_INT("GANGOPS_HEIST_STATUS", -229378)
-                STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+        DOOMS_PRESETS_ACT2 = menu.toggle_loop(DOOMS_PRESETS, TRANSLATE("ACT II - The Bogdan Problem"), {"hcdoomsact2"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
+            if active_doomsday_preset_toggle and active_doomsday_preset_toggle ~= DOOMS_PRESETS_ACT2 then
+                NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                DOOMS_PRESETS_ACT2.value = false
+                return
+            end
 
+            STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 240)
+            STAT_SET_INT("GANGOPS_HEIST_STATUS", -229378)
+            STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+
+            if not active_doomsday_preset_toggle then    
                 menu.trigger_commands("hcdoomsrefreshscreen")
-
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT2 then
-                        DoomsPresetLists[i][2] = true
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT2
                 for i = 1, #ForDoomsPresets do
                     menu.set_help_text(ForDoomsPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(DOOMS_PRESETS) .. " > " .. menu.get_menu_name(DOOMS_PRESETS_ACT2))
                 end
-            else
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT2 then
-                        DoomsPresetLists[i][2] = false
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT2
+            end
+
+            menu.set_value(DOOMS_NON_HOST_CUT, 142)
+            menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
+            menu.set_value(DOOMS_HOST_CUT, 142)
+            menu.set_value(DOOMS_HOST_CUT_LOOP, true)
+            menu.set_value(DOOMS_2P_CUT, 142)
+            menu.set_value(DOOMS_2P_CUT_LOOP, true)
+            menu.set_value(DOOMS_3P_CUT, 142)
+            menu.set_value(DOOMS_3P_CUT_LOOP, true)
+            menu.set_value(DOOMS_4P_CUT, 142)
+            menu.set_value(DOOMS_4P_CUT_LOOP, true)
+        end,function()
+            if active_doomsday_preset_toggle == DOOMS_PRESETS_ACT2 then
+                active_doomsday_preset_toggle = nil
                 for i = 1, #ForDoomsPresets do
                     menu.apply_default_state(ForDoomsPresets[i][1])
                     menu.set_help_text(ForDoomsPresets[i][1], ForDoomsPresets[i][2])
                 end
-            end
-
-            while menu.get_value(DOOMS_PRESETS_ACT2) do
-                menu.set_value(DOOMS_NON_HOST_CUT, 142)
-                menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
-                menu.set_value(DOOMS_HOST_CUT, 142)
-                menu.set_value(DOOMS_HOST_CUT_LOOP, true)
-                menu.set_value(DOOMS_2P_CUT, 142)
-                menu.set_value(DOOMS_2P_CUT_LOOP, true)
-                menu.set_value(DOOMS_3P_CUT, 142)
-                menu.set_value(DOOMS_3P_CUT_LOOP, true)
-                menu.set_value(DOOMS_4P_CUT, 142)
-                menu.set_value(DOOMS_4P_CUT_LOOP, true)
-
-                util.yield_once()
             end
         end)
 
-        DOOMS_PRESETS_ACT3 = menu.toggle(DOOMS_PRESETS, TRANSLATE("ACT III - The Doomsday Scenario"), {"hcdoomsact3"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
-            if menu.get_value(DOOMS_PRESETS_ACT3) then
-                STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 16368)
-                STAT_SET_INT("GANGOPS_HEIST_STATUS", -229380)
-                STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+        DOOMS_PRESETS_ACT3 = menu.toggle_loop(DOOMS_PRESETS, TRANSLATE("ACT III - The Doomsday Scenario"), {"hcdoomsact3"}, TRANSLATE("Note that there is a payout visual bug on the heist screen."), function()
+            if active_doomsday_preset_toggle and active_doomsday_preset_toggle ~= DOOMS_PRESETS_ACT3 then
+                NOTIFY(TRANSLATE("Don't enable both of automated presets at once"))
+                DOOMS_PRESETS_ACT3.value = false
+                return
+            end
 
+            STAT_SET_INT("GANGOPS_FLOW_MISSION_PROG", 16368)
+            STAT_SET_INT("GANGOPS_HEIST_STATUS", -229380)
+            STAT_SET_INT("GANGOPS_FLOW_NOTIFICATIONS", 1557)
+
+            if not active_doomsday_preset_toggle then    
                 menu.trigger_commands("hcdoomsrefreshscreen")
-
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT3 then
-                        DoomsPresetLists[i][2] = true
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT3
                 for i = 1, #ForDoomsPresets do
                     menu.set_help_text(ForDoomsPresets[i][1], TRANSLATE("This feature has been controlled by another feature.") .. "\n" .. "- " .. menu.get_menu_name(DOOMS_PRESETS) .. " > " .. menu.get_menu_name(DOOMS_PRESETS_ACT3))
                 end
-            else
-                for i = 1, #DoomsPresetLists do
-                    if DoomsPresetLists[i][1] == DOOMS_PRESETS_ACT3 then
-                        DoomsPresetLists[i][2] = false
-                    end
-                end
+                active_doomsday_preset_toggle = DOOMS_PRESETS_ACT3
+            end
+
+            menu.set_value(DOOMS_NON_HOST_CUT, 113)
+            menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
+            menu.set_value(DOOMS_HOST_CUT, 113)
+            menu.set_value(DOOMS_HOST_CUT_LOOP, true)
+            menu.set_value(DOOMS_2P_CUT, 113)
+            menu.set_value(DOOMS_2P_CUT_LOOP, true)
+            menu.set_value(DOOMS_3P_CUT, 113)
+            menu.set_value(DOOMS_3P_CUT_LOOP, true)
+            menu.set_value(DOOMS_4P_CUT, 113)
+            menu.set_value(DOOMS_4P_CUT_LOOP, true)
+        end,function()
+            if active_doomsday_preset_toggle == DOOMS_PRESETS_ACT3 then
+                active_doomsday_preset_toggle = nil
                 for i = 1, #ForDoomsPresets do
                     menu.apply_default_state(ForDoomsPresets[i][1])
                     menu.set_help_text(ForDoomsPresets[i][1], ForDoomsPresets[i][2])
                 end
-            end
-
-            while menu.get_value(DOOMS_PRESETS_ACT3) do
-                menu.set_value(DOOMS_NON_HOST_CUT, 113)
-                menu.set_value(DOOMS_NON_HOST_CUT_LOOP, false)
-                menu.set_value(DOOMS_HOST_CUT, 113)
-                menu.set_value(DOOMS_HOST_CUT_LOOP, true)
-                menu.set_value(DOOMS_2P_CUT, 113)
-                menu.set_value(DOOMS_2P_CUT_LOOP, true)
-                menu.set_value(DOOMS_3P_CUT, 113)
-                menu.set_value(DOOMS_3P_CUT_LOOP, true)
-                menu.set_value(DOOMS_4P_CUT, 113)
-                menu.set_value(DOOMS_4P_CUT_LOOP, true)
-
-                util.yield_once()
             end
         end)
 
@@ -3401,34 +3387,11 @@ util.yield()
         SET_INT_LOCAL("fm_mission_controller", 1292 + 135, 3) -- For ACT III, https://www.unknowncheats.me/forum/3455828-post8.html [[update]]
     end)
 
-    menu.action(DOOMS_HEIST, TRANSLATE("Allow You Play Alone"), {}, TRANSLATE("Allow you play alone this heist without another player.") .. "\n\n" .. TRANSLATE("Press this feature once before launching the heist."), function()
-        -- [[update]]
-        if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= nil then -- https://www.unknowncheats.me/forum/grand-theft-auto-v/463868-modest-menu-lua-scripting-megathread-239.html#google_vignette
-            if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= 0 then
-                if GET_INT_LOCAL("fmmc_launcher", 19875 + 15) > 1 then
-                    SET_INT_LOCAL("fmmc_launcher", 19875 + 15, 1)
-                    SET_INT_GLOBAL(794744 + 4 + 1 + (GET_INT_LOCAL("fmmc_launcher", 19875 + 34) * 89) + 69, 1)
-                end
-                
-                SET_INT_GLOBAL(4718592 + 3526, 1)
-                SET_INT_GLOBAL(4718592 + 3527, 1)
-                SET_INT_GLOBAL(4718592 + 3529 + 1, 1)
-                SET_INT_GLOBAL(4718592 + 180865 + 1, 0)
-            end
-        end
-    end)
-
     menu.action(DOOMS_HEIST, TRANSLATE("Force Ready"), {"hcdoomsforceready"}, TRANSLATE("Forces the players on board to ready."), function() 
         -- [[update]]
         SET_INT_GLOBAL(1882780 + 1 + (1 * 149) + 43 + 1 + 4 + 8, 1) -- Thanks to @vithiam on Discord
         SET_INT_GLOBAL(1882780 + 1 + (2 * 149) + 43 + 2 + 4 + 8, 1)
         SET_INT_GLOBAL(1882780 + 1 + (3 * 149) + 43 + 3 + 4 + 8, 1)
-    end)
-
-    menu.action(DOOMS_HEIST, TRANSLATE("Increase Team Lives"), {"hcdoomsincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-        if REQUEST_TO_BE_HOST("fm_mission_controller") then
-            SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
-        end
     end)
 
     menu.action(DOOMS_HEIST, TRANSLATE("Refresh Heist Screen On Facility"), {"hcdoomsrefreshscreen"}, TRANSLATE("You can update changed doomsday heist stats in the Facility by refreshing it."), function()
@@ -3598,7 +3561,6 @@ util.yield()
         elseif ApartmentID >= 8 and ApartmentID <= 23 or ApartmentID >= 66 and ApartmentID <= 72 then
             NOTIFY(TRANSLATE("The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments."))
         else
-            menu.trigger_commands("hcclassicunlockall")
             util.yield(100)
     
             local DepthLV = {{-1, 0, 1}, {-1, 0, 0, 0, 1}, {-1, 0, 0, 1, 2, 2}, {-1, 0, 0, 0, 1, 2}, {-1, 0, 1, 2, 2, 2}}
@@ -3611,7 +3573,14 @@ util.yield()
                 {164435858, "20Lu41Px20OJMPdZ6wXG3g", "6UzZkstFeEeCkvs2lrF_6A", "PPnsIR0v2U2COyRbED87gw", "z49DSS9db0i_vh6A2e-Q-g", "Fo168mMjCUCeN_IKmL4VnA"}, -- Series A Funding
                 {-231973569, "zCxFg29teE2ReKGnr0L4Bg", "6ClY8ZA_DkuBUdZ_fPn6Rw", "OiSO3Z0YdkCaEqVHhhkj4Q", "Cy2OZSwCt0-mSXY00o4SNw", "Y4zpRQDfvkawfFDR1Uxi2A"} -- Pacific Standard Job
             }
-    
+            local rootContentID = {
+                "33TxqLipLUintwlU_YDzMg", -- Fleeca Job
+                "A6UBSyF61kiveglc58lm2Q", -- Prison Break
+                "a_hWnpMUz0-7Yd_Rc5pJ4w", -- Humane Labs Raid
+                "7r5AKL5aB0qe9HiDy3nW8w", -- Series A Funding
+                "hKSf9RCT8UiaZlykyGrMwg"  -- Pacific Standard Job
+            }
+
             STAT_SET_INT("HEIST_PLANNING_STAGE", -1)
             STAT_SET_INT("BITSET_HEIST_VS_MISSIONS", -17809409)
             STAT_SET_INT("HEIST_SESSION_ID_MACADDR", 183381814)
@@ -3628,24 +3597,18 @@ util.yield()
                 STAT_SET_INT("HEIST_MISSION_DEPTH_LV_" .. i, DepthLV[index][i + 1] or -1)
             end
     
-            FORCE_CLOUD_SAVE()
-            menu.trigger_commands("quittosp")
-        end
-    end)
+            STATS.STAT_SAVE(0, 0, 3, 0)
 
-    menu.action(CLASSIC_HEISTS, TRANSLATE("Allow You Play Alone"), {}, TRANSLATE("Allow you play alone this heist without another player.") .. "\n\n" .. TRANSLATE("Press this feature once before launching the heist."), function()
-        if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= nil then -- https://www.unknowncheats.me/forum/grand-theft-auto-v/463868-modest-menu-lua-scripting-megathread-239.html#google_vignette
-            if GET_INT_LOCAL("fmmc_launcher", 19875 + 34) ~= 0 then
-                if GET_INT_LOCAL("fmmc_launcher", 19875 + 15) > 1 then
-                    SET_INT_LOCAL("fmmc_launcher", 19875 + 15, 1)
-                    SET_INT_GLOBAL(794744 + 4 + 1 + (GET_INT_LOCAL("fmmc_launcher", 19875 + 34) * 89) + 69, 1)
-                end
-                
-                SET_INT_GLOBAL(4718592 + 3526, 1)
-                SET_INT_GLOBAL(4718592 + 3527, 1)
-                SET_INT_GLOBAL(4718592 + 3529 + 1, 1)
-                SET_INT_GLOBAL(4718592 + 180865 + 1, 0)
-            end
+            -- [[update]]
+            SET_STR_GLOBAL(1934895 + 10, rootContentID[index])
+            SET_STR_GLOBAL(2635079 + 2, rootContentID[index])
+            SET_STR_GLOBAL(1929352 + 1787, rootContentID[index])
+
+            SET_INT_GLOBAL(1877417 + 1 + (players.user() * 77)  + 75, 1)
+            SET_INT_GLOBAL(2635078, 0)
+	        util.yield(1000)
+	        SET_INT_GLOBAL(2635078, 5)
+	        SET_INT_GLOBAL(1931285  + 2768, 10)
         end
     end)
 
@@ -3654,12 +3617,6 @@ util.yield()
         SET_INT_GLOBAL(2657991 + 1 + (1 * 467) + 269, 6) -- Thanks to @vithiam on Discord
         SET_INT_GLOBAL(2657991 + 1 + (2 * 467) + 269, 6)
         SET_INT_GLOBAL(2657991 + 1 + (3 * 467) + 269, 6)
-    end)
-
-    menu.action(CLASSIC_HEISTS, TRANSLATE("Increase Team Lives"), {"hcclassicincteamlives"}, TRANSLATE("Increases the amount of team lives. Make sure to have script host if it doesn't seem to work."), function()
-        if REQUEST_TO_BE_HOST("fm_mission_controller") then
-            SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000) -- Thanks to @vithiam on Discord [[update]]
-        end
     end)
 
     menu.action(CLASSIC_HEISTS, TRANSLATE("Unlock All Classic Heists"), {"hcclassicunlockall"}, TRANSLATE("Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes."), function() -- Big thanks to @negotium.rpm on Discord
@@ -3696,7 +3653,7 @@ util.yield()
         STAT_SET_BOOL("HEIST_AWARD_BOUGHT_IN", true)
         STAT_SET_BOOL("HEIST_STRAND_INTRO_DONE", true)
         STAT_SET_BOOL("MPPLY_JOBFLOW_HEIST_TEXT", true)
-    
+
         util.yield(50)
         if STAT_GET_INT("BITSET_HEIST_VS_MISSIONS") == -1 then -- Because this feature is used in 'Complete All Setups'
             FORCE_CLOUD_SAVE()
@@ -5081,6 +5038,126 @@ util.yield()
 --- Tools
 util.yield()
 
+    menu.toggle_loop(TOOLS, TRANSLATE("Allow Solo Heist"), {"soloheist"}, TRANSLATE("Allows you to play all heist missions solo.") .. "\n" .. TRANSLATE("Enable before starting the heist and keep it enabled until the heist is done."), function()
+        -- [[update]]
+        SET_INT_GLOBAL(2635079 + 1, 0)  -- Clear the cooldown to prevent the apartment’s heist planning board from appearing blank.
+
+        local var = GET_INT_LOCAL("fmmc_launcher", 19875 + 34) -- https://www.unknowncheats.me/forum/grand-theft-auto-v/463868-modest-menu-lua-scripting-megathread-239.html#google_vignette
+        if var ~= nil and var ~= 0 then
+            if GET_INT_LOCAL("fmmc_launcher", 19875 + 15) > 1 then
+                SET_INT_LOCAL("fmmc_launcher", 19875 + 15, 1)
+            end
+
+            if GET_INT_GLOBAL(794744 + 4 + 1 + (var * 89) + 69) > 1 then
+                SET_INT_GLOBAL(794744 + 4 + 1 + (var * 89) + 69, 1)
+            end
+
+            SET_INT_GLOBAL(4718592 + 3526, 1)
+            SET_INT_GLOBAL(4718592 + 3527, 1)
+            SET_INT_GLOBAL(4718592 + 3529 + 1, 1)
+            SET_INT_GLOBAL(4718592 + 180865 + 1, 0)
+
+            SET_INT_LOCAL("fmmc_launcher", 20116, 0) -- This is used for restarting; without it, the restart button will not be available.
+            SET_INT_GLOBAL(4718592 + 3523, 1) -- This is used for restarting; without it, the restart button will not be available.
+        end
+
+        -- Doing a few things to automate the opening of the mantrap doors in the casino heist, as well as setting up some heist data
+        if IS_SCRIPT_ACTIVE("fm_mission_controller") then
+            if IS_CURRENT_MISSION_CASINO_HEIST_FINALE() then
+                local Casino_Heist_Config_Data = 1965580
+                if STAT_GET_INT("H3OPT_APPROACH") == 2 then
+                    SET_INT_GLOBAL(Casino_Heist_Config_Data + 22, 3)
+                end
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 1, STAT_GET_INT("H3OPT_TARGET")) -- Target
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 2, true) -- Security Cameras
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 3, true) -- Guard Patrol Routes
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 4, 3) -- Remove body armor
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 5, true) --  Night Vision
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 6, true) --  Handheld Drill
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 7, true) -- 
+                if active_casino_preset_toggle then
+                    SET_INT_GLOBAL(Casino_Heist_Config_Data + 8, math.random(0,2)) -- Buyer: Low level
+                else
+                    SET_INT_GLOBAL(Casino_Heist_Config_Data + 8, math.random(6,8)) -- Buyer: High level
+                end
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 10, true) --  Decoy Crew Member
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 11, true) -- Switch Getaway
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 13, STAT_GET_INT("H3OPT_CREWWEAP")) -- Weapons
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 14, STAT_GET_INT("H3OPT_WEAPS")) -- Weapons
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 15, STAT_GET_INT("H3OPT_CREWDRIVER")) -- Vehicle
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 16, STAT_GET_INT("H3OPT_VEHS")) -- Vehicle
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 17, STAT_GET_INT("H3OPT_CREWHACKER")) -- Hacker
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 18, 2) -- Key access level
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 20, 1) -- Set the exit point to Staff Lobby; If the value is 0, the mission will fail when leaving the casino.
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 21, STAT_GET_INT("H3OPT_MASKS")) -- Mask
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 24, true) -- Office Infested
+                SET_INT_GLOBAL(Casino_Heist_Config_Data + 25, 2047) -- Access Point Bitset
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 26, true) -- Rappel Gear
+                SET_BOOL_GLOBAL(Casino_Heist_Config_Data + 27, true) -- Hard Mode
+
+                local Keycard_Blip = HUD.GET_FIRST_BLIP_INFO_ID(733)
+                local Room_Key = INTERIOR.GET_ROOM_KEY_FROM_ENTITY(players.user_ped())
+                if Room_Key == 1929398810 and HUD.DOES_BLIP_EXIST(Keycard_Blip) then
+                    SET_INT_LOCAL("fm_mission_controller", 31658 + 1 + players.user() * 293 + 26, 3)
+                elseif Room_Key == 554788825 and HUD.DOES_BLIP_EXIST(Keycard_Blip) then
+                    SET_INT_LOCAL("fm_mission_controller", 31658 + 1 + players.user() * 293 + 26, 1)
+                end
+            end
+        end
+    end)
+
+    menu.action(TOOLS, TRANSLATE("Skip to Next Objective"), {"skipnextobj"}, TRANSLATE("Skip the current mission stage if it's blocked by missing players. Useful for solo runs when a teammate is required to open a door or reach a location."), function()
+        -- credits to @rostal315 for sharing the code
+        local function set_bits(script, base_offset)
+            SET_LOCAL_BIT(script, base_offset + 2, 10)
+            SET_LOCAL_BIT(script, base_offset + 2, 17)
+            SET_LOCAL_BIT(script, base_offset + 2, 18)
+            SET_LOCAL_BIT(script, base_offset + 2, 19)
+        end
+
+        if IS_SCRIPT_ACTIVE("fm_mission_controller") then
+            local script = "fm_mission_controller"
+            local current_mission_index = GET_INT_LOCAL("fm_mission_controller", 1673)
+            local current_objective = GET_INT_LOCAL("fm_mission_controller", 28402 + 1)
+
+            -- Delete the doors in the pacific standard job
+            if current_mission_index == 26 and current_objective == 4 then
+                DELETE_OBJECT_BY_HASH(util.joaat("hei_v_ilev_bk_gate_pris"))
+            elseif current_mission_index == 26 and current_objective == 5 then
+                DELETE_OBJECT_BY_HASH(util.joaat("hei_v_ilev_bk_gate2_pris"))
+            elseif current_mission_index == 26 and current_objective == 6 then
+                SET_LOCAL_BIT(script, 19783 + 1788, 6) -- open the vault door
+                set_bits(script, 19783)
+                local start_time = util.current_time_millis()
+                repeat
+                    util.yield()
+                    current_objective = GET_INT_LOCAL(script, 28402 + 1)
+                until   current_objective == 8 or not IS_SCRIPT_ACTIVE(script) or util.is_session_transition_active() or util.current_time_millis() - start_time > 10000
+                if current_objective == 8 then
+                    set_bits(script, 19783)
+                end
+                return
+            end
+            set_bits(script, 19783)
+        elseif IS_SCRIPT_ACTIVE("fm_mission_controller_2020") then
+            set_bits("fm_mission_controller_2020", 52171)
+        end
+    end)
+
+    menu.action(TOOLS, TRANSLATE("Increase Team Lives"), {"hccpincteamlives"}, TRANSLATE("Increases the amount of team lives."), function()
+        -- Thanks to @vithiam on Discord [[update]]
+        if IS_SCRIPT_ACTIVE("fm_mission_controller") then
+            if REQUEST_TO_BE_HOST("fm_mission_controller") then
+                SET_INT_LOCAL("fm_mission_controller", 19783 + 1765 + 1, 10000000)
+            end
+        elseif IS_SCRIPT_ACTIVE("fm_mission_controller_2020") then
+            if REQUEST_TO_BE_HOST("fm_mission_controller_2020") then
+                SET_INT_LOCAL("fm_mission_controller_2020", 58874 + 1109 + 1, 10000000)
+            end
+        end
+    end)
+
+
     TUNABLES = menu.list(TOOLS, TRANSLATE("Tunables"), {}, "", function(); end) -- Almost not credited global variables from: https://www.unknowncheats.me/forum/3337151-post1560.html
 
         TUNABLES_CD = menu.list(TUNABLES, TRANSLATE("Remove Cooldowns"), {}, "", function(); end)
@@ -5428,6 +5505,10 @@ util.yield()
             menu.action(INSTANT_FINISH, TRANSLATE("Casino / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money."), function()
                 if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
+                    if 	GET_INT_LOCAL("fm_mission_controller", 1673) == 26 then -- The Pacific Standard Job
+                        SET_INT_LOCAL("fm_mission_controller", 1673, 27)	-- Modify the heist mission index to Pacific heist Part 2(Leaving the Bank)
+                        SET_INT_LOCAL("fm_mission_controller", 19783 + 2687, 0)	-- Skip cutscene
+                    end
                     SET_INT_LOCAL("fm_mission_controller", 19783 + 1062, 5)  -- Instant Finish for the "Silent and Sneaky" and "BigCon" and "Pacific Standard" heists
                     SET_INT_LOCAL("fm_mission_controller", 19783 + 1740 + 1, 80) -- Casino Aggressive Kills & Act 3
                     SET_INT_LOCAL("fm_mission_controller", 19783 + 2686, 10000000) -- How much did you take in the casino and pacific standard heist
@@ -5904,8 +5985,8 @@ util.yield()
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Delete"), {"hcdelcam"}, "", function()
                 if IS_CURRENT_MISSION_CASINO_HEIST_FINALE() then  -- If you're in the casino heist, it seems that for some reason you can't directly delete the cameras
-                    for entities.get_all_objects_as_pointers() as obj do
-                        for AllCamLists as cam_hash do
+                    for _, obj in pairs(entities.get_all_objects_as_pointers()) do
+                        for _, cam_hash in pairs(AllCamLists) do    
                             if entities.get_model_hash(obj) == cam_hash and entities.request_control(obj, 3000) then
                                 local camera = entities.pointer_to_handle(obj)
                                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(camera, -8271.156, -1293.2153, -100, false, false, false)
@@ -6946,30 +7027,6 @@ util.yield()
         { CAH_4P_CUT, 147, "(%)" },
         { CAH_4P_CUT_LOOP, true, "" },
     }
-    CasinoPresetLists = { -- { command_ref, is_enabled }
-        { DIAMOND_SS, false },
-        { DIAMOND_BA, false },
-        { DIAMOND_AA, false },
-        { GOLD_SS, false },
-        { GOLD_BA, false },
-        { GOLD_AA, false },
-    }
-    util.create_tick_handler(function()
-        local CasinoEnabledPresets = 0
-        for i = 1, #CasinoPresetLists do
-            if CasinoPresetLists[i][2] then
-                CasinoEnabledPresets = CasinoEnabledPresets + 1
-            end
-        end
-        if CasinoEnabledPresets > 1 then
-            NOTIFY(TRANSLATE("Don't enable both of automated presets at once") .. " - " .. TRANSLATE("Diamond Casino Heist") .. "\n\n" .. TRANSLATE("Successfully cancelled!"))
-            for i = 1, #CasinoPresetLists do
-                if CasinoPresetLists[i][2] then
-                    menu.set_value(CasinoPresetLists[i][1], false)
-                end
-            end
-        end
-    end)
 
     ForDoomsPresets = { -- { command_ref, default_help_text }
         { DOOMS_NON_HOST_CUT, "(%)" },
@@ -6983,27 +7040,6 @@ util.yield()
         { DOOMS_4P_CUT, "(%)" },
         { DOOMS_4P_CUT_LOOP, "" },
     }
-    DoomsPresetLists = { -- { command_ref, is_enabled }
-        { DOOMS_PRESETS_ACT1, false },
-        { DOOMS_PRESETS_ACT2, false },
-        { DOOMS_PRESETS_ACT3, false },
-    }
-    util.create_tick_handler(function()
-        local DoomsEnabledPresets = 0
-        for i = 1, #DoomsPresetLists do
-            if DoomsPresetLists[i][2] then
-                DoomsEnabledPresets = DoomsEnabledPresets + 1
-            end
-        end
-        if DoomsEnabledPresets > 1 then
-            NOTIFY(TRANSLATE("Don't enable both of automated presets at once") .. " - " .. TRANSLATE("Doomsday Heist") .. "\n\n" .. TRANSLATE("Successfully cancelled!"))
-            for i = 1, #DoomsPresetLists do
-                if DoomsPresetLists[i][2] then
-                    menu.set_value(DoomsPresetLists[i][1], false)
-                end
-            end
-        end
-    end)
 
     TPs = {
         {
