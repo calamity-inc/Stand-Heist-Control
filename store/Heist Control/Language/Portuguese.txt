@@ -649,6 +649,7 @@ Force Ready = Forçar Pronto
 Forces the players on board to ready. = Obriga os jogadores do quadro a estarem prontos.
 Please don't forget that BUYER should be selected LOW! Otherwise, won't get money. = Por favor não esqueça que o COMPRADOR deve ser o BAIXO! Ou então, não receberá nenhum dinheiro.
 Allow You Play Alone = Permitir Você Jogar Sozinho
+Allow Solo Heist = Permitir Você Jogar Sozinho
 Allow you play alone this heist without another player. = Permite você jogar esse golpe inteiramente sozinho, sem qualquer outro jogador.
 Press this feature once before launching the heist. = Pressione esse recurso uma vez antes de você iniciar o golpe.
 Load All Boards = Carregar Todos os Quadros

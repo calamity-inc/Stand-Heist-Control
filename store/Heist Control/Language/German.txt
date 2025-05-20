@@ -640,6 +640,7 @@ Force Ready = Bereit erzwingen
 Forces the players on board to ready. = Zwingt alle Spieler dazu, auf Bereit zu drücken.
 Please don't forget that BUYER should be selected LOW! Otherwise, won't get money. = Achte darauf, dass der niedrigste Käufer ausgewählt ist, sonst gibts kein Geld.
 Allow You Play Alone = Erlaubt es dir, alleine zu spielen.
+Allow Solo Heist = Erlaubt es dir, alleine zu spielen.
 Allow you play alone this heist without another player. = Damit kannst du den Heist auch alleine, ohne andere Spieler, spielen.
 Press this feature once before launching the heist. = Einmal auswählen, bevor du den Heist startest.
 Load All Boards = Alle Planungstafeln laden
@@ -732,7 +733,7 @@ Set Crew Level = Crewlevel setzen
 
 
 Increase Team Lives = Team-Leben erhöhen
-Increases the amount of team lives. Make sure to have script host if it doesn't seem to work. = Erhöht die Anzahl der Leben, die dein Team zur Verfügung hat. Wenn etwas nicht richtig funktioniert, nimm dir Script Host.
+Increases the amount of team lives. = Erhöht die Anzahl der Leben.
 I Wanna Receive The Heist Payout = Ich möchte den Heist-Payout bekommen
 Enabled: Each player will receive $15M = Aktiviert: Jeder Spieler wird 15 Mio $ erhalten.
 Disabled: For except me, only other players will receive $15M = Deaktiviert: Nur andere Spieler werden die 15 Mio $ erhalten, nicht du
