@@ -641,6 +641,7 @@ Force Ready = Ustaw Status Gotowości
 Forces the players on board to ready. = Umożliwia rozpoczęcie napadu poprzez zmianę statusu wszystkich graczy na 'Gotowy'.
 Please don't forget that BUYER should be selected LOW! Otherwise, won't get money. = Pamiętaj, że należy wybrać NISKI poziom nabywcy! W innym przypadku nie otrzymasz wynagrodzenia.
 Allow You Play Alone = Ustaw Rozpoczęcie w Pojedynkę
+Allow Solo Heist = Ustaw Rozpoczęcie w Pojedynkę
 Allow you play alone this heist without another player. = Pozwala rozpocząć napad solo, bez konieczności udziału innych graczy.
 Press this feature once before launching the heist. = Pamiętaj, że należy użyć tej funkcji jednorazowo przed rozpoczęciem każdego napadu.
 Load All Boards = Załaduj Wszystkie Tablice
@@ -732,7 +733,7 @@ Motorbike = Motocykl Dostawczy
 
 
 Increase Team Lives = Zwiększ Życia Drużyny
-Increases the amount of team lives. Make sure to have script host if it doesn't seem to work. = Zwiększa liczbę żyć drużyny. Upewnij się, że jesteś hostem skryptu, jeśli ta funkcja wydaje się nie działać.
+Increases the amount of team lives. = Zwiększa liczbę żyć drużyny.
 I Wanna Receive The Heist Payout = Otrzymaj Wynagrodzenie za Napad
 Enabled: Each player will receive $15M = Włączone: Każdy gracz otrzyma 15,000,000$.
 Disabled: For except me, only other players will receive $15M = Wyłączone: Tylko pozostali gracze otrzymają 15,000,000$.
