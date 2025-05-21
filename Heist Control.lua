@@ -135,7 +135,7 @@
         end
 
         function SET_BOOL_GLOBAL(global, bool)
-            memory.write_int(memory.script_global(global), bool and 1 or 0)
+            memory.write_int(memory.script_global(global), bool ? 1 : 0)
         end
 
         function SET_STR_GLOBAL(global, str)
