@@ -1799,7 +1799,7 @@ util.yield()
                 local valid_door_ids = {0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,21,22,28,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}
                 for _, pid in ipairs(players.list_except()) do
                     for _, id in ipairs(valid_door_ids) do 
-                	    util.trigger_script_event(1 << pid, {-859331176, pid,pid,2,id,0})
+                	    util.trigger_script_event(1 << pid, {-859331176, pid,pid,2,id,0}) -- [[update]]
                     end
                 end
             end
@@ -2672,10 +2672,10 @@ util.yield()
                 for _, pid in ipairs(players.list_except()) do
                     for i = 0, GET_INT_LOCAL("fm_mission_controller",19783 + 245) - 1 do
                         if INTERIOR.GET_ROOM_KEY_FROM_ENTITY(players.user_ped()) == 1929398810 then  -- vault
-                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,1})
+                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,1})  -- [[update]]
                         else
-                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,0})
-                            util.trigger_script_event(1 << pid, {1262194935, pid,1,i})
+                            util.trigger_script_event(1 << pid, {1521244608, pid,1,i,0})  -- [[update]]
+                            util.trigger_script_event(1 << pid, {1262194935, pid,1,i})  -- [[update]]
                         end
                     end
                 end
