@@ -5987,8 +5987,8 @@ util.yield()
 
             menu.action(NEAR_PED_CAM, TRANSLATE("Delete"), {"hcdelcam"}, "", function()
                 if IS_CURRENT_MISSION_CASINO_HEIST_FINALE() then  -- If you're in the casino heist, it seems that for some reason you can't directly delete the cameras
-                    for _, obj in pairs(entities.get_all_objects_as_pointers()) do
-                        for _, cam_hash in pairs(AllCamLists) do    
+                    for entities.get_all_objects_as_pointers() as obj do
+                        for AllCamLists as cam_hash do
                             if entities.get_model_hash(obj) == cam_hash and entities.request_control(obj, 3000) then
                                 local camera = entities.pointer_to_handle(obj)
                                 ENTITY.SET_ENTITY_COORDS_NO_OFFSET(camera, -8271.156, -1293.2153, -100, false, false, false)
