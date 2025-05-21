@@ -38,7 +38,7 @@
 
     --- Important
 
-        HC_VERSION = "V 3.4.6"
+        HC_VERSION = "V 3.5.0"
         CODED_GTAO_VERSION = 1.70 -- b3521
 
     ---
