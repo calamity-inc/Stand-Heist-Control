@@ -3550,7 +3550,7 @@ util.yield()
         SET_INT_GLOBAL(262145 + FleecaBypassMinMaxTunables[3], 15)
     end)
 
-    menu.textslider_stateful(CLASSIC_HEISTS, TRANSLATE("Complete All Setups"), {}, TRANSLATE("Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly. After using, you will automatically be returned to Story Mode to apply the changes."), {
+    menu.textslider_stateful(CLASSIC_HEISTS, TRANSLATE("Complete All Setups"), {}, TRANSLATE("Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly."), {
         TRANSLATE("Fleeca Job"), 
         TRANSLATE("Prison Break"), 
         TRANSLATE("Humane Labs Raid"), 
