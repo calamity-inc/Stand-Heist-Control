@@ -1,7 +1,7 @@
 # DON'T REMOVE '#', OTHERWISE WILL CAUSE ERRORS!
 
-# Generated Date: 04/29/2024 12:26:45 AM
-# Heist Control Version: V 3.4.2
+# Generated Date: 07/10/2024 05:55:07 PM
+# Heist Control Version: V 3.4.4
 
 # Thank you for translating Heist Control!
 # You should translate right-side of '=' character.
@@ -251,12 +251,7 @@ About HC = Sobre o HC
 Join Discord Server! = Junte-se ao Servidor do Discord!
 Changelog = Atualizações
 Native file for HC doesn't exist. = Arquivo nativo para HC não existe.
-[NOT WORKING] = [NÃO FUNCIONANDO]
-- This feature isn't working due to the latest GTA Online patch: = - Este conteúdo não está funcinando devido ao último patch do GTA Online:
 Please re-enable 'Stand > Lua Scripts > Repository > Heist Control' to fix! = Por favor reabilite 'Stand > Scripts LUA > Repositório > Heist Control' para corrigir o problema!
-Except [NOT WORKING] features should work! = Todos os conteúdos com exceção dos [NÃO FUNCIONANDO] devem funcionar corretamente!
-Coded GTA Online Version: = Codificado para a versão do GTA Online:
-Current GTA Online Version: = Versão atual do GTA Online:
 Settings And About HC = Configurações e Sobre o HC
 Quick Preset (1 - 4P) = Predefinição Rápida (1 - 4P)
 Drainage Pipe = Tunel de Drenagem
@@ -325,7 +320,6 @@ Prisoner Cell = Cela do Prisoneiro
 Remove EMP Mines = Remover Minas PEM
 (ACT III, Setup - Air Defense) = (ATO III, Preparação - Defesa Áerea)
 Unlock All Doomsday Heists = Destravar todos os Atos do Golpes do Juízo Final
-Complete All Setup = Completar Todas as Preparações
 Skip Drilling = Pular Perfuração
 Modify Contracts payout - $1 Million = Modificar Pagamentos dos Contratos - $1 Milhão
 Complete The Preps = Completar as Preliminares
@@ -450,7 +444,6 @@ Ceramic Pistol = Pistola de Cerâmica
 Successfully cancelled! = Cancelado com sucesso!
 Cooldown time has passed, you can play the heist again! = Tempo de espera já passou, você pode fazer o golpe de novo!
 Acid Lab = Laboratório de Ácido
-RC Bandito = RC Bandito
 RC Tank = RC Tank
 Wallet Money = Dinheiro na Carteira
 Mins = Mins
@@ -630,16 +623,7 @@ Taze = Tazer
 If you have any questions regarding Heist Control? Joining it will help you so much! = Tem alguma dúvida relacionada ao Heist Control? Junte-se para que possamos lhe ajudar!
 - Download sharable customized translations and GTAHaXUI stat files. = - Baixe arquivos de tradução compartilhados e customizados e arquivos de stats do GTAHaXUI.
 - Post a suggestion or an issue to improve Heist Control. = - Poste uma sugestão ou problema para melhorar o Heist Control.
-
-
-# Start of newly updated translations.
-# Translate them!
-
-
-Please download the latest version of Heist Control or wait for Heist Control's developer patching. = Por favor baixe a última versão do Heist Control ou espere pela correção do desenvolvedor do Heist Control.
 Please re-enable 'Stand > Lua Scripts > Repository > natives-1681379138' or please join HC DC server to get support! = Por favor reative 'Stand > Scripts LUA > Repositório > natives-1681379138' ou por favor entre no servidor do Discord do HC para obter suporte!
-But, all features of HC should work without any patches! = Contudo, todos os recursos do HC devem funcionar sem problemas!
-HC is needed to be patched by the developer. Please be patient. = HC está em processo de atualização pelo desenvolvedor. Por favor, tenha paciência.
 You won't get money if you don't keep money limitation! = Você não receberá dinheiro se não mantiver a limitação do dinheiro!
 - Fleeca Heist ~ Pacific Standard Heist: Under $3.000.000 per run = - Golpe do Fleeca ~ Golpe do Pacific Standard: Menos de $3.000.000 por golpe
 Robberies = Roubos
@@ -654,14 +638,8 @@ Allow you play alone this heist without another player. = Permite você jogar es
 Press this feature once before launching the heist. = Pressione esse recurso uma vez antes de você iniciar o golpe.
 Load All Boards = Carregar Todos os Quadros
 Unload All Boards = Descarregar Todos os Quadros
-If you use 'Mouse Support' feature, please before using this feature, click 'Game > Disables > Disable Game Inputs > Presets > Numpad' after using it, click 'Mouse' = Se você usa o recurso 'Suporte a Mouse', selecione 'Game > Desativações > Desabilitar inputs de jogo > Predefinição > Numpad' antes de usar este recurso, e após usa-lo você pode selecionar a opção 'Mouse' novamente
-The Fleeca Job = O Golpe do Fleeca
-Let you and other players will get $15M when you are host and in finale. = Permite você e outros jogadores receberem $15M quando você é o host no finale.
-Make sure DIFFICULTY is NORMAL! = Garanta que a DIFICULDADE está no NORMAL!
 Prison Break = A Fuga da Prisão
-Humane Labs = Invasão ao Laboratório Humane
 Series A Funding = Financiamento Série A
-There are video tutorials in Heist Control Discord server. If you have no idea how to use this feature, see them! = Tem vídeos tutoriais no servidor do Discord do Heist Control. Se você não tem ideia de como usar esse recurso, assista-os!
 Remove The Cooldown = Remove O Tempo de Espera
 This doesn't bypass server-sided cooldown time, 20 mins. This just bypasses unable to launch heist in heist board. = Isso não impede o tempo de espera do servidor de 20 minutos. Isso apenas evita a espera para iniciar outro golpe do quadro de golpes.
 Make all of players forced ready in planning board. = Obriga os players do quadro de planejamento a estarem prontos.
@@ -741,3 +719,31 @@ Crew ID = ID do Comando
 Current Crew Level = Nível de Comando Atual
 Choose Crew Level = Escolha o Nível do Comando
 Set Crew Level = Definir Nível do Comando
+
+
+# Start of newly updated translations.
+# Translate them!
+
+
+Supported GTA:O Version: = Versão do GTA:O suportada:
+Current GTA:O Version: = Versão do GTA:O atual:
+Please download the latest Heist Control or wait for developer's patching! = Por favor baixe a última versão do Heist Control ou espere o desenvolvedor atualizar!
+Increase Team Lives = Aumentar Vidas da Equipe
+Increases the amount of team lives. = Aumenta o número de vidas da equipe.
+Compatible with any classic heist and any difficulty level. = Compativel com qualquer golpe clássico e qualquer nível de dificuldade.
+Note that you should use this feature when you're on the planning board after watching or skipping the cutscene. It only works if you are host of the heist. = OBS: Você só deve usar esse recurso quando você estiver na tela de planejamento após assistir ou pular a cutscene. Só funciona se você for o host do golpe.
+- Option 1: Each player will receive $3.000.000 = - Opção 1: Cada jogador vai receber $3.000.000
+- Option 2: Only other players will receive $3.000.000 = - Opção 2: Apenas os outros jogadores irão receber $3.000.000
+Option 1 = Opção 1
+Option 2 = Opção 2
+Force Challenges Bonus = Forçar Bônus de Desafios
+Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. = Permite você ganhar um adicional de 12 milhões ao completar O Serviço do Pacific Standard. Isso irá afetar apenas você, mesmo se você não for o host. Habilite antes de iniciar o golpe e deixe habilitado até o final.
+Complete All Setups = Completar Todas as Preparações
+Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly. = Permite você completar todas as preparações do golpe selecionado. Você deve estar dentro do seu apartamento para o recurso funcionar de maneira apropriada.
+Fleeca Job = Serviço do Fleeca
+Humane Labs Raid = Invasão ao Laboratório Humane
+Pacific Standard Job = O Serviço do Pacific Standard
+It seems that you are currently not in any apartment. = Parece que você não está em nenhum apartamento no momento.
+The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = A tela de planejamento do golpe não pode ser encontrada neste apartamento. Garanta que você está em um dos apartamentos de alto padrão.
+Unlock All Classic Heists = Destravar Todos os Golpes Clássicos
+Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = Destrava todos os golpes da tela de planejamento. Também marca todos os tutoriais como completado permitindo você pular as cutscenes. Após o uso, você irá retornar automaticamente para o Modo História para aplicar as mudanças.
