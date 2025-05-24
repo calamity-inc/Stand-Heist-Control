@@ -3531,7 +3531,7 @@ util.yield()
             SET_INT_GLOBAL(262145 + 9186, 15000000)	-- Bonus Value
         end
     end, function()    
-        SET_INT_GLOBAL(262145 + 9186, 100000)
+        SET_INT_GLOBAL(262145 + 9186, -1)
     end)
 
     -- The bitsets used here are also occasionally referenced as 2^N in the game scripts.
