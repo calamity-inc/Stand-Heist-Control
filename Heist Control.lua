@@ -38,7 +38,7 @@
 
     --- Important
 
-        HC_VERSION = "V 3.5.0"
+        HC_VERSION = "V 3.5.1"
         CODED_GTAO_VERSION = 1.70 -- b3521
 
     ---
@@ -190,6 +190,7 @@
         function SET_BIT(bits, place) -- Credit goes to WiriScript
             return (bits | (1 << place))
         end
+
         function SET_LOCAL_BIT(script, script_local, bit)
             if memory.script_local(script, script_local) ~= 0 then
                 local Addr = memory.script_local(script, script_local)
@@ -197,6 +198,14 @@
             end
         end
 
+        function CLEAR_LOCAL_BIT(script, script_local, bit)
+            if memory.script_local(script, script_local) ~= 0 then
+                local Addr = memory.script_local(script, script_local)
+                local value = memory.read_int(Addr)
+                value = value & ~(1 << bit)
+                memory.write_int(Addr, value)
+            end
+        end
     ---
     
     --- Folders and Log Functions
@@ -3510,6 +3519,21 @@ util.yield()
         SET_FLOAT_LOCAL("fm_mission_controller", 10105 + 11, 100) -- https://www.unknowncheats.me/forum/3485435-post19.html [[update]]
     end)
 
+    menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Max Elite Challenge Bonus"), {}, TRANSLATE("[HIGH RISK! Do not use on accounts you care about!]") .. "\n" .. TRANSLATE("This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes."), function()
+    -- [[update]]
+        local current_mission_index = GET_INT_LOCAL("fm_mission_controller", 1673)
+        if current_mission_index == 26 or current_mission_index == 27 then
+            -- Challenge Completion Setting
+            SET_INT_LOCAL("fm_mission_controller", 15996, 1) -- Will not be displayed on the screen  
+            SET_INT_LOCAL("fm_mission_controller", 19783 + 987, math.random(590169,600000)) -- Completion time 10:00 - 10:10
+            CLEAR_LOCAL_BIT("fm_mission_controller",19783 + 3,11)	-- Noose not called
+            SET_INT_LOCAL("fm_mission_controller", 19783 + 2689, 0)	-- Nobody gets wasted
+            SET_INT_GLOBAL(262145 + 9186, 15000000)	-- Bonus Value
+        end
+    end, function()    
+        SET_INT_GLOBAL(262145 + 9186, 100000)
+    end)
+
     -- The bitsets used here are also occasionally referenced as 2^N in the game scripts.
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Force Challenges Bonus"), {}, TRANSLATE("Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. You can only claim this once every 20 minutes."), function() -- Big thanks to @negotium.rpm on Discord
         local finale_1_and_2 = ((1 << 26) | (1 << 27)) - 1
@@ -5507,7 +5531,7 @@ util.yield()
             menu.action(INSTANT_FINISH, TRANSLATE("Casino / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money."), function()
                 if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                    if 	GET_INT_LOCAL("fm_mission_controller", 1673) == 26 then -- The Pacific Standard Job
+                    if GET_INT_LOCAL("fm_mission_controller", 1673) == 26 then -- The Pacific Standard Job
                         SET_INT_LOCAL("fm_mission_controller", 1673, 27)	-- Modify the heist mission index to Pacific heist Part 2(Leaving the Bank)
                         SET_INT_LOCAL("fm_mission_controller", 19783 + 2687, 0)	-- Skip cutscene
                     end
