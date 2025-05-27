@@ -727,3 +727,6 @@ Open Folder for Translations = Open Folder for Translations
 If you changed the Stand's setting while HC is still running, need to restart HC to apply. = If you changed the Stand's setting while HC is still running, need to restart HC to apply.
 Creator of WiriScript which helped me code HC! = Creator of WiriScript which helped me code HC!
 Don't enable both of automated presets at once = Don't enable both of automated presets at once
+Max Elite Challenge Bonus = エリートチャレンジ最大ボーナス
+[RISKY! Do not use on accounts you care about!] = [リスクあり！大切なアカウントでは使用しないでください！]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = このオプションは、パシフィック強盗のエリートチャレンジを自動的に完了させ、ボーナスを15,000,000ドルに修正します。20分ごとに1回のみ受け取ることができます。

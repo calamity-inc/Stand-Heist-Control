@@ -740,3 +740,6 @@ Allow Solo Heist = Allow Solo Heist
 Allows you to play all heist missions solo. Enable before starting the heist and keep it enabled until the heist is done. = Allows you to play all heist missions solo. Enable before starting the heist and keep it enabled until the heist is done.
 Skip to Next Objective = Skip to Next Objective
 Skip the current mission stage if it's blocked by missing players. Useful for solo runs when a teammate is required to open a door or reach a location. = Skip the current mission stage if it's blocked by missing players. Useful for solo runs when a teammate is required to open a door or reach a location.
+Max Elite Challenge Bonus = Max Elite Challenge Bonus
+[RISKY! Do not use on accounts you care about!] = [RISKY! Do not use on accounts you care about!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes.

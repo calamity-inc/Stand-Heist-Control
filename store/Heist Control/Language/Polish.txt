@@ -745,3 +745,6 @@ Setting the payout is in progress... = Trwa ustawianie wynagrodzenia...
 Please don't move the mouse until notify to you. = Nie należy poruszać myszką, dopóki nie otrzymasz powiadomienia.
 Setting the payout is done! = Wynagrodzenie zostało ustawione!
 You can move the mouse since now. = Możesz teraz poruszać myszką.
+Max Elite Challenge Bonus = Maksymalna premia za wyzwanie elitarne
+[RISKY! Do not use on accounts you care about!] = [RYZYKO! Nie używaj na kontach, na których Ci zależy!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Ta opcja automatycznie kończy wyzwanie elitarne napadu na Pacific Standard i modyfikuje premię do 15 000 000 $. Możesz odebrać to tylko raz na 20 minut.

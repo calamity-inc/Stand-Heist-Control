@@ -738,3 +738,6 @@ It seems that you are currently not in any apartment. = Кажется, что �
 The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = В этой квартире не удалось найти доску планирования. Убедитесь, что вы находитесь в одной из элитных квартир.
 Unlock All Classic Heists = Разблокировать все классические ограбления
 Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = Разблокирует возможность запускать все ограбления на доске планирования. Также все обучения помечаются как завершенные, также дает возможность пропускать видеосцены. После использования вы автоматически перейдете в сюжетный режим, для применения изменений.
+Max Elite Challenge Bonus = Максимальный бонус за Элитное испытание
+[RISKY! Do not use on accounts you care about!] = [РИСК! Не используйте на аккаунтах, которыми вы дорожите!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Эта опция автоматически завершает Элитное испытание ограбления Pacific Standard и изменяет бонус до 15 000 000 $. Вы можете получить его только раз в 20 минут.

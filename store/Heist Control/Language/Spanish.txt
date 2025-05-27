@@ -633,3 +633,6 @@ Successfully Generated! = Generado con éxito
 Successfully Updated! = Actualizado con éxito
 'Stand' setting is synced with Stand's default feature: 'Stand > Settings > Appearance > Colours > AR Colour' = El ajuste "Stand" se sincroniza con la función por defecto de Stand: "Stand > Ajustes > Apariencia > Colores > Color AR".
 If you changed the Stand's setting while HC is still running, need to restart HC to apply. = Si has cambiado la configuración del Stand mientras HC todavía está en ejecución, deberás reiniciar HC para aplicar los cambios.
+Max Elite Challenge Bonus = Bonificación máxima de Desafío Élite
+[RISKY! Do not use on accounts you care about!] = [¡RIESGO! ¡No usar en cuentas que te importan!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Esta opción completa automáticamente el Desafío Élite del Golpe a la Pacific Standard y modifica la bonificación a $15,000,000. Solo puedes reclamarlo una vez cada 20 minutos.

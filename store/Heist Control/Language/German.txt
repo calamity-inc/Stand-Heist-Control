@@ -744,3 +744,6 @@ It seems that you are currently not in any apartment. = Scheint so, als wärst d
 The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = Heist - Planungstafel konnte in diesem Apartment nicht gefunden werden. Geh in eins der High-End-Apartments.
 Unlock All Classic Heists = Alle klassischen Heists freischalten
 Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = Schaltet alle Heists auf der Planungstafel frei. Alle Tutorials werden ebenfalls als abgeschlossen markiert und du kannst Cutscenes skippen. Du wirst nach dem Anwenden automatisch in den Story Mode geschickt, um die Änderungen anzuwenden.
+Max Elite Challenge Bonus = Maximaler Elite-Herausforderungs-Bonus
+[RISKY! Do not use on accounts you care about!] = [RISIKO! Nicht auf Konten verwenden, die Ihnen wichtig sind!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Diese Option schließt die Elite-Herausforderung des Pacific Standard Überfalls automatisch ab und ändert den Bonus auf 15.000.000 $. Sie können dies nur einmal alle 20 Minuten beanspruchen.

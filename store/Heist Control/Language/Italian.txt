@@ -728,3 +728,6 @@ Don't enable both of automated presets at once = Non abilitare entrambe le preim
 
 
 The Contract DLC = The Contract DLC
+Max Elite Challenge Bonus = Bonus massimo sfida élite
+[RISKY! Do not use on accounts you care about!] = [RISCHIO! Non usare su account a cui tieni!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Questa opzione completa automaticamente la Sfida Élite del Colpo alla Pacific Standard e modifica il bonus a 15.000.000 $. Puoi richiederlo solo una volta ogni 20 minuti.

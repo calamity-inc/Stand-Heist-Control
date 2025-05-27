@@ -747,3 +747,6 @@ It seems that you are currently not in any apartment. = Parece que você não es
 The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = A tela de planejamento do golpe não pode ser encontrada neste apartamento. Garanta que você está em um dos apartamentos de alto padrão.
 Unlock All Classic Heists = Destravar Todos os Golpes Clássicos
 Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = Destrava todos os golpes da tela de planejamento. Também marca todos os tutoriais como completado permitindo você pular as cutscenes. Após o uso, você irá retornar automaticamente para o Modo História para aplicar as mudanças.
+Max Elite Challenge Bonus = Bônus máximo do Desafio de Elite
+[RISKY! Do not use on accounts you care about!] = [RISCO! Não use em contas que lhe importam!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Esta opção completa automaticamente o Desafio de Elite do Golpe do Pacific Standard e modifica o bônus para $15.000.000. Você só pode reivindicá-lo uma vez a cada 20 minutos.

@@ -744,3 +744,6 @@ The heist planning board couldn't be found in this apartment. Make sure you are 
 Mở Khoá Tất Cả Classic Heists = Unlock All Classic Heists
 Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. = Mở khóa tất cả các heist trên bảng kế hoạch. Cũng đánh dấu tất cả các hướng dẫn là hoàn thành và cho phép bạn bỏ qua các đoạn cắt cảnh.
 Alien Tatto (Illuminati) = Alien Tatto (Illuminati)
+Max Elite Challenge Bonus = Tiền thưởng tối đa Thử thách Tinh nhuệ
+[RISKY! Do not use on accounts you care about!] = [RỦI RO! Không sử dụng trên tài khoản bạn quan tâm!]
+This option automatically completes the Pacific Standard Job's Elite Challenge and modifies the bonus to $15,000,000. You can only claim this once every 20 minutes. = Tùy chọn này tự động hoàn thành Thử thách Tinh nhuệ của Phi vụ Pacific Standard và sửa đổi tiền thưởng lên 15.000.000 đô la. Bạn chỉ có thể nhận tiền thưởng này một lần mỗi 20 phút.
