@@ -3512,15 +3512,15 @@ util.yield()
 
     -- The bitsets used here are also occasionally referenced as 2^N in the game scripts.
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Force Challenges Bonus"), {}, TRANSLATE("Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. You can only claim this once every 20 minutes."), function() -- Big thanks to @negotium.rpm on Discord
-        local finale_1_and_2 = ((1 << 26) | (1 << 27)) - 1
+        local max = (1 << 28) - 1
         -- Force All In Order
-        STAT_SET_INT("MPPLY_HEISTFLOWORDERPROGRESS", finale_1_and_2)
+        STAT_SET_INT("MPPLY_HEISTFLOWORDERPROGRESS", max)
         STAT_SET_BOOL("MPPLY_AWD_HST_ORDER", false)
         -- Force Loyalty
-        STAT_SET_INT("MPPLY_HEISTTEAMPROGRESSBITSET", finale_1_and_2)
+        STAT_SET_INT("MPPLY_HEISTTEAMPROGRESSBITSET", max)
         STAT_SET_BOOL("MPPLY_AWD_HST_SAME_TEAM", false)
         -- Force Criminal Mastermind
-        STAT_SET_INT("MPPLY_HEISTNODEATHPROGREITSET", finale_1_and_2)
+        STAT_SET_INT("MPPLY_HEISTNODEATHPROGREITSET", max)
         STAT_SET_BOOL("MPPLY_AWD_HST_ULT_CHAL", false)
     end, function()
         local max = (1 << 28) - 1
