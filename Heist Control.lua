@@ -3512,6 +3512,7 @@ util.yield()
 
     -- The bitsets used here are also occasionally referenced as 2^N in the game scripts.
     menu.toggle_loop(CLASSIC_HEISTS, TRANSLATE("Force Challenges Bonus"), {}, TRANSLATE("Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. You can only claim this once every 20 minutes."), function() -- Big thanks to @negotium.rpm on Discord
+        -- 1 << 28 - 1 is required if the mission index is set to 27 (pacific finale 2).
         local finale_1_and_2 = ((1 << 26) | (1 << 27)) - 1
         -- Force All In Order
         STAT_SET_INT("MPPLY_HEISTFLOWORDERPROGRESS", finale_1_and_2)
@@ -5507,9 +5508,10 @@ util.yield()
             menu.action(INSTANT_FINISH, TRANSLATE("Casino / Classic"), {"hcinsfincah"}, TRANSLATE("Note that if you don't use Heist Control's automated Casino Heist presets, won't get money."), function()
                 if REQUEST_TO_BE_HOST("fm_mission_controller") then
                 -- [[update]]
-                    if 	GET_INT_LOCAL("fm_mission_controller", 1673) == 26 then -- The Pacific Standard Job
-                        SET_INT_LOCAL("fm_mission_controller", 1673, 27)	-- Modify the heist mission index to Pacific heist Part 2(Leaving the Bank)
-                        SET_INT_LOCAL("fm_mission_controller", 19783 + 2687, 0)	-- Skip cutscene
+                    if  GET_INT_LOCAL("fm_mission_controller", 1673) == 26 then -- The Pacific Standard Job
+                        -- Using mission index 27 requires (1 << 28) - 1 as the bitset for Force Challenges Bonus.
+                        -- SET_INT_LOCAL("fm_mission_controller", 1673, 27) -- Modify the heist mission index to Pacific heist Part 2(Leaving the Bank)
+                        SET_INT_LOCAL("fm_mission_controller", 19783 + 2687, 0) -- Skip cutscene
                     end
                     SET_INT_LOCAL("fm_mission_controller", 19783 + 1062, 5)  -- Instant Finish for the "Silent and Sneaky" and "BigCon" and "Pacific Standard" heists
                     SET_INT_LOCAL("fm_mission_controller", 19783 + 1740 + 1, 80) -- Casino Aggressive Kills & Act 3
