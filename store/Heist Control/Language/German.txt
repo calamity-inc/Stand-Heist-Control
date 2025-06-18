@@ -1,7 +1,7 @@
 # DON'T REMOVE '#', OTHERWISE WILL CAUSE ERRORS!
 
-# Generated Date: 05/24/2024 11:33:07 PM
-# Heist Control Version: V 3.4.3
+# Generated Date: 07/13/2024 12:19:41 AM
+# Heist Control Version: V 3.4.4
 
 # Thank you for translating Heist Control!
 # You should translate right-side of '=' character.
@@ -240,12 +240,7 @@ Text Color = Textfarbe
 About HC = Über HC
 Join Discord Server! = Discord Server beitreten!
 Changelog = Changelog
-[NOT WORKING] = [FUNKTIONIERT NICHT]
-- This feature isn't working due to the latest GTA Online patch: = - Dieses Feature fuktioniert (noch) nicht aufgrund des neuesten GTA Updates:
 Please re-enable 'Stand > Lua Scripts > Repository > Heist Control' to fix! = Bitte lade HC erneut, um das zu beheben!
-Except [NOT WORKING] features should work! = Alle Features außer die mit [FUNKTIONIERT NICHT] sollten funktionieren!
-Coded GTA Online Version: = Gecoded für GTA Online Version:
-Current GTA Online Version: = Aktuelle GTA Online Version:
 Settings And About HC = Einstellungen und über HC
 Quick Preset (1 - 4P) = Schnelle Presets (1 ~ 4 Spieler)
 Drainage Pipe = Entwässerungsrohr
@@ -321,7 +316,6 @@ Prisoner Cell = Gefängniszelle
 Remove EMP Mines = EMP-Minen entfernen
 (ACT III, Setup - Air Defense) = (AKT III, Vorberitung - Luftverteidigung)
 Unlock All Doomsday Heists = Alle Doomsday Heists freischalten
-Complete All Setup = Alle Setups abschließen
 Skip Drilling = Bohren überspringen
 Modify Contracts payout - $1 Million = Ändere die Contract-Auszahlungen - 1 MILLION $
 Complete The Preps = Preps überspringen
@@ -421,7 +415,7 @@ Refresh = Neu laden
 Refresh the list via restarting Heist Control. = Lade die Liste neu, indem du HC neu startest.
 This action will take a few seconds. Please wait for it patiently, don't press multiple times. = Dieser Vorgang wird ein paar Sekunden dauern. Bitte klicke NICHT 50x hier drauf.
 - Total number of translations: = - Anzahl an Übersetzungen insgesamt:
-- Number of not modified translations: = - Anzahl der modifizierten Übersetzungen:
+- Number of not modified translations: = - Anzahl der insgesamt modifizierten Übersetzungen:
 - Number of modified (updated) translations: = - Anzahl der geupdateten Übersetzungen:
 Notification's Style = Notification's Style
 Type = Type
@@ -449,7 +443,6 @@ Refresh Kosatka Planning Table = Kosatka Planungstafel neu laden
 You can update changed cayo perico heist stats in the Kosatka by refreshing it. = Du kannst geänderte Cayo Perico Heist-Einstellungen anwenden, indem du die Tafel neu lädst.
 Successfully cancelled! = Erfolgreich abgebrochen!
 Acid Lab = Acid Labor
-RC Bandito = RC Bandito
 RC Tank = RC Panzer
 Days = Tage
 Waiting for generating: = Warte aufs generieren:
@@ -614,7 +607,6 @@ Would helpful for skipping something cannot be skipped using 'Game > Skip Cutsce
 Clear All Help Messages = Alle Hilfenachrichten wegmachen
 Clearing a black box with white help texts where are left, above of the screen. = Entfernen des schwarzen Kastens mit Hilfetexten links oben auf dem Bildschirm.
 Can be used for getting targets slightly more fast. = Kann dazu genutzt werden, die Ziele etwas schneller zu kriegen.
-Please download the latest version of Heist Control or wait for Heist Control's developer patching. = Bitte downloade die neueste HC-Version oder warte auf einen Patch.
 Please re-enable 'Stand > Lua Scripts > Repository > natives-1681379138' or please join HC DC server to get support! = Bitte aktiviere die Natives unter 'Stand > Lua Scripts > Repository > natives-1681379138' erneut oder joine dem HC Discord, wenn du Fragen hast!
 Note that modifying this won't applied to the heist board. You can check the applied cut after end of the heist. = Beachte, dass du Änderungen hier nicht auf der Heist-Planungstafel sehen wirst. Du kannst den tatsächlichen ANteil am Ende des Heists sehen.
 If the Heist Planning (Board 3) is empty, then please re-enable the preset that you enabled! = Wenn die dritte Heist-Planungstafel leer ist, dann aktiviere das Preset bitte erneut!
@@ -629,8 +621,6 @@ Taze = Taze
 If you have any questions regarding Heist Control? Joining it will help you so much! = Wenn du Fragen bzgl. HC hast, kannst du gerne joinen!
 - Download sharable customized translations and GTAHaXUI stat files. = - Downloade oder teile Übersetzungen und GTAHaXUI stat files.
 - Post a suggestion or an issue to improve Heist Control. = - Poste einen Vorschlag oder melde einen Fehler, um HC noch besser zu machen.
-But, all features of HC should work without any patches! = Alle Features von HC sollten aber funktionieren.
-HC is needed to be patched by the developer. Please be patient. = HC funktioniert grade nicht und braucht ein Update des Entwicklers. Bitte warte auf das Update.
 You won't get money if you don't keep money limitation! = Du kriegst gar kein Geld, wenn du dich nicht an die Geld-Limits hältst!
 - Fleeca Heist ~ Pacific Standard Heist: Under $3.000.000 per run = - Fleeca Heist ~ Pacific Standard Heist: Unter 3.000.000$ pro Run
 Robberies = Überfälle
@@ -645,8 +635,6 @@ Allow you play alone this heist without another player. = Damit kannst du den He
 Press this feature once before launching the heist. = Einmal auswählen, bevor du den Heist startest.
 Load All Boards = Alle Planungstafeln laden
 Unload All Boards = Alle Planungstafeln entladen
-Let you and other players will get $15M when you are host and in finale. = Erlaubt es dir und anderen Spielern im Finale, 15 Millionen zu bekommen, wenn du Host bist.
-There are video tutorials in Heist Control Discord server. If you have no idea how to use this feature, see them! = Es gibt auf dem HC-Discord Video-Tutorials. Guck sie dir an, wenn du keine Ahnung hast, was du machen sollst.
 Remove The Cooldown = Cooldown entfernen
 This doesn't bypass server-sided cooldown time, 20 mins. This just bypasses unable to launch heist in heist board. = Dies kann nicht den server-seitigen Cooldown von 20 Minuten entfernen. Dies erlaubt es dir nur, auf der Heist-Planungstafel den Heist trotzdem zu starten.
 Make all of players forced ready in planning board. = Alle Spieler auf der Planungstafel auf 'Bereit' zwingen.
@@ -726,22 +714,33 @@ Crew ID = Crew ID
 Current Crew Level = Aktuelles Crewlevel
 Choose Crew Level = Crewlevel auswählen
 Set Crew Level = Crewlevel setzen
+Increase Team Lives = Team-Leben erhöhen
+Increases the amount of team lives. = Erhöht die Anzahl der Leben, die dein Team zur Verfügung hat.
+Compatible with any classic heist and any difficulty level. = Kompatibel mit jedem klassischen Heist und jedem Schwierigkeitsgrad.
 
 
 # Start of newly updated translations.
 # Translate them!
 
 
-Increase Team Lives = Team-Leben erhöhen
-Increases the amount of team lives. = Erhöht die Anzahl der Leben.
-I Wanna Receive The Heist Payout = Ich möchte den Heist-Payout bekommen
-Enabled: Each player will receive $15M = Aktiviert: Jeder Spieler wird 15 Mio $ erhalten.
-Disabled: For except me, only other players will receive $15M = Deaktiviert: Nur andere Spieler werden die 15 Mio $ erhalten, nicht du
-Note: To apply this state, you should click 'Automated Presets' = Beachte: Du solltest die 'Automatischen Voreinstellungen' nutzen, um es anzuwenden.
-Compatible with any classic heist and any difficulty level. = Kompatibel mit jedem klassischen Heist und jedem Schwierigkeitsgrad.
-But, recommeded setting DIFFICULTY to NORMAL to prevent game bugs like not getting money, etc. = Es wird aber empfohlen, den Schwierigkeitsgrad auf NORMAL zu setzen, um Bugs zu vermeiden wie z.B. keine Auszahlung etc.
-To prevent game bugs, please press once. = Um Bugs zu verhindern, bitte einmal drücken.
-Setting the payout is in progress... = Auszahlung wird geändert...
-Please don't move the mouse until notify to you. = Bitte bewege die Maus nicht, bis du eine Benachrichtigung bekommst.
-Setting the payout is done! = Auszahlung erfoglreich geändert!
-You can move the mouse since now. = Du kannst die Maus jetzt wieder bewegen. Vielen Dank für deine Kooperation :)
+Supported GTA:O Version: = Unterstützte GTA Online - Version:
+Current GTA:O Version: = Deine aktuelle GTA Online - Version:
+Please download the latest Heist Control or wait for developer's patching! = Bitte update HC oder warte auf einen Patch, wenn noch kein Update da ist!
+Note that you should use this feature when you're on the planning board after watching or skipping the cutscene. It only works if you are host of the heist. = Du solltest dieses Feature nutzen, wenn du auf der Planungstafel bist, nachdem die Cutscene vorbei ist. Geht nur, wenn du Host des Heists bist!
+- Option 1: Each player will receive $3.000.000 = - Option 1: Jeder Spieler erhält 3 Mio $.
+- Option 2: Only other players will receive $3.000.000 = - Option 2: Nur die anderen Spieler erhalten 3 Mio $.
+Option 1 = Option 1
+Option 2 = Option 2
+Force Challenges Bonus = Challenge - Boni erzwingen
+Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. = Damit kannst du zusätzlich 12 Mio $ fürs Abschließen des Pacific Standard Jobs auf Schwer bekommen. Nur du wirst es kriegen, selbst wenn du nicht Host bist. Vor dem Starten des Heists anmachen und bis zum Ende aktiviert lassen.
+Complete All Setups = Alle Setups abschließen
+Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly. = Du kannst alle Setups für den ausgewählten Heist überspringen. Du musst in deinem Apartment sein, damit es anständig funktioniert.
+Fleeca Job = Fleeca Job
+Prison Break = Gefängnisausbruch
+Humane Labs Raid = Humane Labs Raid
+Series A Funding = Series A Funding
+Pacific Standard Job = Pacific Standard Job
+It seems that you are currently not in any apartment. = Scheint so, als wärst du gerade in keinem Apartment.
+The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = Heist - Planungstafel konnte in diesem Apartment nicht gefunden werden. Geh in eins der High-End-Apartments.
+Unlock All Classic Heists = Alle klassischen Heists freischalten
+Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. After using, you will automatically be returned to Story Mode to apply the changes. = Schaltet alle Heists auf der Planungstafel frei. Alle Tutorials werden ebenfalls als abgeschlossen markiert und du kannst Cutscenes skippen. Du wirst nach dem Anwenden automatisch in den Story Mode geschickt, um die Änderungen anzuwenden.

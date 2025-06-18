@@ -1,7 +1,7 @@
 # DON'T REMOVE '#', OTHERWISE WILL CAUSE ERRORS!
 
-# Generated Date: 05/22/2024 02:02:15 AM
-# Heist Control Version: V 3.4.3
+# Generated Date: 06/30/2024 09:15:55 AM
+# Heist Control Version: V 3.4.4
 
 # Thank you for translating Heist Control!
 # You should translate right-side of '=' character.
@@ -60,7 +60,6 @@ Secondary Target = Mục Tiêu Phụ
 Compound Loot = Cướp Compound
 Weapon Loadouts = Bố Trí Vũ Khí
 Aggressor = Kẻ Tấn Công
-- Machete + Grenades = - Dao Mác + Lựu Đạn
 Conspirator = Kẻ Chủ Mưu
 Crackshot = Tay Bắn Tỉa
 - Knife + Molotov = - Dao + Bom Xăng
@@ -149,7 +148,6 @@ Double Action Revolver = Double Action Revolver
 Navy Revolver = Navy Revolver
 Up-N-Atomizer = Up-N-Atomizer
 Vanilla Unicorn Award = Giải Thưởng Vanilla Unicorn
-Alien Tattoo (Illuminati) = Alien Tattoo (Illuminati)
 Tunables = Điều Chỉnh
 Remove Cooldowns = Gỡ Bỏ Thời Gian Hồi
 MC Business = MC Business
@@ -233,12 +231,7 @@ Text Color = Màu Chữ
 About HC = Giới Thiệu Về HC
 Join Discord Server! = Tham Gia Máy Chủ Discord!
 Changelog = Nhật Ký Thay Đổi
-[NOT WORKING] = [KHÔNG HOẠT ĐỘNG]
-- This feature isn't working due to the latest GTA Online patch: = - Tính năng này không hoạt động do bản cập nhật GTA Online mới nhất:
 Please re-enable 'Stand > Lua Scripts > Repository > Heist Control' to fix! = Vui lòng kích hoạt lại 'Stand > Lua Scripts > Repository > Heist Control' để sửa!
-Except [NOT WORKING] features should work! = Ngoại trừ các tính năng [KHÔNG HOẠT ĐỘNG], các tính năng khác vẫn hoạt động!
-Coded GTA Online Version: = Phiên Bản GTA Online Được Mã Hóa:
-Current GTA Online Version: = Phiên Bản GTA Online Hiện Tại:
 Settings And About HC = Cài Đặt Và Giới Thiệu Về HC
 Quick Preset (1 - 4P) = Cài Đặt Nhanh (1 - 4P)
 Drainage Pipe = Ống Thoát Nước
@@ -314,7 +307,6 @@ Prisoner Cell = Phòng Giam
 Remove EMP Mines = Gỡ Mìn EMP
 (ACT III, Setup - Air Defense) = (ACT III, Thiết Lập - Phòng Không)
 Unlock All Doomsday Heists = Mở Khóa Tất Cả Doomsday Heists
-Complete All Setup = Hoàn Thành Tất Cả Các Thiết Lập
 Skip Drilling = Bỏ Qua Khoan
 Complete The Preps = Hoàn Thành Các Chuẩn Bị
 Reset The Preps = Đặt Lại Các Chuẩn Bị
@@ -469,7 +461,6 @@ Only works if you are host of the heist. = Chỉ hoạt động nếu bạn là 
 Successfully cancelled! = Hủy thành công!
 Terrorbyte = Terrorbyte
 Acid Lab = Acid Lab
-RC Bandito = RC Bandito
 RC Tank = RC Tank
 Waiting for generating: = Đang chờ tạo:
 Successfully Generated! = Tạo thành công!
@@ -619,7 +610,6 @@ Taze = Taze
 If you have any questions regarding Heist Control? Joining it will help you so much! = Nếu bạn có bất kỳ câu hỏi nào liên quan đến Heist Control? Tham gia sẽ giúp bạn rất nhiều!
 - Download sharable customized translations and GTAHaXUI stat files. = - Tải xuống các bản dịch tùy chỉnh có thể chia sẻ và các tập tin thống kê GTAHaXUI.
 - Post a suggestion or an issue to improve Heist Control. = - Đăng một gợi ý hoặc một vấn đề để cải thiện Heist Control.
-Please download the latest version of Heist Control or wait for Heist Control's developer patching. = Vui lòng tải xuống phiên bản mới nhất của Heist Control hoặc đợi bản vá từ nhà phát triển của Heist Control.
 Please re-enable 'Stand > Lua Scripts > Repository > natives-1681379138' or please join HC DC server to get support! = Vui lòng bật lại 'Stand > Tập Lệnh Lua > Kho Lưu Trữ > natives-1681379138' hoặc tham gia server HC DC để được hỗ trợ!
 There is only a primary target, depends on which you selected. All players of the heist session can get the max payout ($2.45M) by only getting it. = Chỉ có một mục tiêu chính, tùy thuộc vào mục tiêu bạn đã chọn. Tất cả người chơi trong phiên heist có thể nhận được mức thanh toán tối đa ($2.45M) chỉ bằng cách đạt được nó.
 Note that works on best when you are alone in your session. = Lưu ý rằng hoạt động tốt nhất khi bạn ở một mình trong phiên của mình.
@@ -630,8 +620,6 @@ Crew ID = Crew ID
 Current Crew Level = Cấp Độ Crew Hiện Tại
 Choose Crew Level = Chọn Cấp Độ Crew
 Set Crew Level = Đặt Cấp Độ Crew
-But, all features of HC should work without any patches! = Nhưng, tất cả các tính năng của HC nên hoạt động mà không cần bất kỳ bản vá nào!
-HC is needed to be patched by the developer. Please be patient. = HC cần được vá bởi nhà phát triển. Vui lòng kiên nhẫn.
 You won't get money if you don't keep money limitation! = Bạn sẽ không nhận được tiền nếu bạn không giữ giới hạn tiền!
 There is cooldown time when after you do play any heists once. The cooldown time is 20 mins, so this let you know the time passed or not. = Có thời gian hồi sau khi bạn chơi bất kỳ heist nào một lần. Thời gian hồi là 20 phút, vì vậy điều này cho bạn biết thời gian đã trôi qua hay chưa.
 Modify Contracts payout - $1 Million = Chỉnh sửa tiền thưởng Contracts - $1 Triệu
@@ -642,7 +630,6 @@ Allow You Play Alone = Cho Phép Bạn Chơi Một Mình
 Allow Solo Heist = Cho Phép Bạn Chơi Một Mình
 Allow you play alone this heist without another player. = Cho phép bạn chơi một mình heist này mà không cần người chơi khác.
 Press this feature once before launching the heist. = Nhấn tính năng này một lần trước khi bắt đầu heist.
-Let you and other players will get $15M when you are host and in finale. = Để bạn và các người chơi khác sẽ nhận được $15 triệu khi bạn là host và trong finale.
 Remove The Cooldown = Loại Bỏ Thời Gian Hồi
 This doesn't bypass server-sided cooldown time, 20 mins. This just bypasses unable to launch heist in heist board. = Điều này không bỏ qua thời gian hồi từ phía máy chủ, 20 phút. Điều này chỉ bỏ qua việc không thể khởi động phi vụ trong bảng heist.
 Force Ready = Bắt Buộc Sẵn Sàng
@@ -686,14 +673,14 @@ D-Day = D-Day
 Please make sure you can play Operation Paper Trail now! = Vui lòng đảm bảo rằng bạn có thể chơi Operation Paper Trail ngay bây giờ!
 Los Santos Drug Wars = Los Santos Drug Wars
 Welcome to the Troupe = Welcome to the Troupe
-(First Dose) = (First Dose)
+(First Dose) = (Liều Đầu)
 Designated Driver = Designated Driver
 Fatal Incursion = Fatal Incursion
 Uncontrolled Substance = Uncontrolled Substance
 Make War not Love = Make War not Love
 Off the Rails = Off the Rails
 This is an Intervention = This is an Intervention
-(Last Dose) = (Last Dose)
+(Last Dose) = (Liều Cuối)
 Unusual Suspects = Unusual Suspects
 FriedMind = FriedMind
 Checking In = Checking In
@@ -725,17 +712,35 @@ Motorbike = Motorbike
 Forces the players on board to ready. = Bắt buộc người chơi trên bảng sẵn sàng.
 Load All Boards = Tải Tất Cả Các Bảng
 Unload All Boards = Bỏ Tải Tất Cả Các Bảng
-There are video tutorials in Heist Control Discord server. If you have no idea how to use this feature, see them! = Có các hướng dẫn video trong server Discord của Heist Control. Nếu bạn không biết cách sử dụng tính năng này, hãy xem chúng!
 Increase Team Lives = Tăng Số Mạng Của Đội
 Increases the amount of team lives. = Tăng số mạng của đội.
-I Wanna Receive The Heist Payout = Tôi Muốn Nhận Tiền Thưởng Phi Vụ
-Enabled: Each player will receive $15M = Bật: Mỗi người chơi sẽ nhận được $15 triệu
-Disabled: For except me, only other players will receive $15M = Tắt: Trừ tôi, chỉ các người chơi khác sẽ nhận được $15 triệu
-Note: To apply this state, you should click 'Automated Presets' = Lưu ý: Để áp dụng trạng thái này, bạn nên nhấp vào 'Thiết Lập Tự Động'
 Compatible with any classic heist and any difficulty level. = Tương thích với bất kỳ phi vụ cổ điển nào và bất kỳ mức độ khó nào.
-But, recommended setting DIFFICULTY to NORMAL to prevent game bugs like not getting money, etc. = Nhưng, khuyến nghị đặt MỨC ĐỘ KHÓ về BÌNH THƯỜNG để tránh các lỗi game như không nhận được tiền, v.v.
-To prevent game bugs, please press once. = Để tránh lỗi game, vui lòng nhấn một lần.
-Setting the payout is in progress... = Đang thiết lập tiền thưởng...
-Please don't move the mouse until notify to you. = Vui lòng không di chuyển chuột cho đến khi được thông báo.
-Setting the payout is done! = Thiết lập tiền thưởng đã hoàn tất!
-You can move the mouse since now. = Bạn có thể di chuyển chuột từ bây giờ.
+
+
+# Start of newly updated translations.
+# Translate them!
+
+
+Supported GTA:O Version: = Phiên Bản GTA:O Được Hỗ Trợ:
+Current GTA:O Version: = Phiên Bản GTA:O Hiện Tại:
+Please download the latest Heist Control or wait for developer's patching! = Vui lòng tải xuống Heist Control mới nhất hoặc đợi nhà phát triển phát hành bản vá!
+- Machete + Grenade = - Mã Tấu + Lựu Đạn
+Note that you should use this feature when you're on the planning board after watching or skipping the cutscene. It only works if you are host of the heist. = Lưu ý rằng bạn nên sử dụng tính năng này khi bạn đang ở trên bảng kế hoạch sau khi xem hoặc bỏ qua đoạn cắt cảnh. Nó chỉ hoạt động nếu bạn là chủ của heist.
+- Option 1: Each player will receive $3.000.000 = - Tùy chọn 1: Mỗi người chơi sẽ nhận được $3.000.000
+- Option 2: Only other players will receive $3.000.000 = - Tùy chọn 2: Chỉ những người chơi khác sẽ nhận được $3.000.000
+Option 1 = Tùy chọn 1
+Option 2 = Tùy chọn 2
+Force Challenges Bonus = Bắt Buộc Tiền Thưởng Thử Thách
+Allows you to gain an additional 12 millions for completing the Pacific Standard Job finale on hard difficulty. Note that it will only affect you, even if you are not the host. Enable before starting the heist and keep it enabled until it ends. = Cho phép bạn nhận thêm 12 triệu cho việc hoàn thành phần cuối của Pacific Standard Job ở độ khó cao. Lưu ý rằng nó sẽ chỉ ảnh hưởng đến bạn, ngay cả khi bạn không phải là chủ. Kích hoạt trước khi bắt đầu heist và giữ cho đến khi kết thúc.
+Complete All Setups = Hoàn Thành Tất Cả Các Thiết Lập
+Allows you to complete all setups for the selected heist. Note that you have to be in your apartment for the feature to work properly. After using, you will automatically be returned to Story Mode to apply the changes. = Cho phép bạn hoàn thành tất cả các thiết lập cho heist đã chọn. Lưu ý rằng bạn phải ở trong căn hộ của mình để tính năng hoạt động chính xác. Sau khi sử dụng, bạn sẽ tự động được đưa trở lại Story Mode để áp dụng các thay đổi.
+Fleeca Job = Fleeca Job
+Prison Break = Prison Break
+Humane Labs Raid = Humane Labs Raid
+Series A Funding = Series A Funding
+Pacific Standard Job = Pacific Standard Job
+It seems that you are currently not in any apartment. = Có vẻ như hiện tại bạn không ở trong bất kỳ căn hộ nào.
+The heist planning board couldn't be found in this apartment. Make sure you are in one of the high-end apartments. = Bảng kế hoạch heist không thể tìm thấy trong căn hộ này. Đảm bảo bạn đang ở trong một trong những căn hộ cao cấp.
+Mở Khoá Tất Cả Classic Heists = Unlock All Classic Heists
+Unlocks all heists on the planning board. Also marks all tutorials as completed and allows you to skip cutscenes. = Mở khóa tất cả các heist trên bảng kế hoạch. Cũng đánh dấu tất cả các hướng dẫn là hoàn thành và cho phép bạn bỏ qua các đoạn cắt cảnh.
+Alien Tatto (Illuminati) = Alien Tatto (Illuminati)
