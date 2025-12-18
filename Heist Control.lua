@@ -39,7 +39,7 @@
     --- Important
 
         HC_VERSION = "V 3.5.3"
-        CODED_GTAO_VERSION = 1.72 -- b3717.0
+        CODED_GTAO_VERSION = 1.72 -- b3725.0
 
     ---
 
@@ -1685,9 +1685,9 @@ util.yield()
             PERICO_HOST_CUT = menu.list(PERICO_CUTS, TRANSLATE("Your Cut"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CP_HOST_CUT_LOOP = menu.toggle_loop(PERICO_HOST_CUT, TRANSLATE("Enable"), {"hccphostcutloop"}, "", function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 1, menu.get_value(CP_HOST_CUT)) -- [[update]] (heist_island_planning.c)
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 1, menu.get_value(CP_HOST_CUT)) -- [[update]] (heist_island_planning.c)
                 end, function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 1, menu.get_default_state(CP_HOST_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 1, menu.get_default_state(CP_HOST_CUT)) -- [[update]]
                 end)
 
                 CP_HOST_CUT = menu.slider(PERICO_HOST_CUT, TRANSLATE("Custom Percentage"), {"hccphostcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -1697,9 +1697,9 @@ util.yield()
             PERICO_P2_CUT = menu.list(PERICO_CUTS, TRANSLATE("Player 2"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CP_2P_CUT_LOOP = menu.toggle_loop(PERICO_P2_CUT, TRANSLATE("Enable"), {"hccp2pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 2, menu.get_value(CP_2P_CUT)) -- heist_island_planning.c [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 2, menu.get_value(CP_2P_CUT)) -- heist_island_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 2, menu.get_default_state(CP_2P_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 2, menu.get_default_state(CP_2P_CUT)) -- [[update]]
                 end)
 
                 CP_2P_CUT = menu.slider(PERICO_P2_CUT, TRANSLATE("Custom Percentage"), {"hccp2pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -1709,9 +1709,9 @@ util.yield()
             PERICO_P3_CUT = menu.list(PERICO_CUTS, TRANSLATE("Player 3"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CP_3P_CUT_LOOP = menu.toggle_loop(PERICO_P3_CUT, TRANSLATE("Enable"), {"hccp3pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 3, menu.get_value(CP_3P_CUT)) -- heist_island_planning.c [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 3, menu.get_value(CP_3P_CUT)) -- heist_island_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 3, menu.get_default_state(CP_3P_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 3, menu.get_default_state(CP_3P_CUT)) -- [[update]]
                 end)
 
                 CP_3P_CUT = menu.slider(PERICO_P3_CUT, TRANSLATE("Custom Percentage"), {"hccp3pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -1721,9 +1721,9 @@ util.yield()
             PERICO_P4_CUT = menu.list(PERICO_CUTS, TRANSLATE("Player 4"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CP_4P_CUT_LOOP = menu.toggle_loop(PERICO_P4_CUT, TRANSLATE("Enable"), {"hccp4pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 4, menu.get_value(CP_4P_CUT)) -- heist_island_planning.c [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 4, menu.get_value(CP_4P_CUT)) -- heist_island_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1978755 + 831 + 56 + 4, menu.get_default_state(CP_4P_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1978756 + 831 + 56 + 4, menu.get_default_state(CP_4P_CUT)) -- [[update]]
                 end)
 
                 CP_4P_CUT = menu.slider(PERICO_P4_CUT, TRANSLATE("Custom Percentage"), {"hccp4pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -1789,9 +1789,9 @@ util.yield()
 
         menu.action(PERICO_ADV, TRANSLATE("Force Ready"), {"hccpforceready"}, TRANSLATE("Forces the players on board to ready."), function() 
             -- [[update]]
-            SET_INT_GLOBAL(1979867 + 1 + (1 * 27) + 8 + 1, 1) -- Thanks to @vithiam on Discord
-            SET_INT_GLOBAL(1979867 + 1 + (2 * 27) + 8 + 2, 1) 
-            SET_INT_GLOBAL(1979867 + 1 + (3 * 27) + 8 + 3, 1) 
+            SET_INT_GLOBAL(1979868 + 1 + (1 * 27) + 8 + 1, 1) -- Thanks to @vithiam on Discord
+            SET_INT_GLOBAL(1979868 + 1 + (2 * 27) + 8 + 2, 1) 
+            SET_INT_GLOBAL(1979868 + 1 + (3 * 27) + 8 + 3, 1) 
         end)
 
         menu.action(PERICO_ADV, TRANSLATE("Open All Locked Doors"), {""}, TRANSLATE(""), function()
@@ -2600,9 +2600,9 @@ util.yield()
             CAH_HOST = menu.list(CAH_PLAYER_CUT, TRANSLATE("Your Cut"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CAH_HOST_CUT_LOOP = menu.toggle_loop(CAH_HOST, TRANSLATE("Enable"), {"hccah1pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 1, menu.get_value(CAH_HOST_CUT)) -- gb_casino_heist_planning.c [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 1, menu.get_value(CAH_HOST_CUT)) -- gb_casino_heist_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 1, menu.get_default_state(CAH_HOST_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 1, menu.get_default_state(CAH_HOST_CUT)) -- [[update]]
                 end)
 
                 CAH_HOST_CUT = menu.slider(CAH_HOST, TRANSLATE("Custom Percentage"), {"hccah1pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -2612,9 +2612,9 @@ util.yield()
             CAH_2P = menu.list(CAH_PLAYER_CUT, TRANSLATE("Player 2"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CAH_2P_CUT_LOOP = menu.toggle_loop(CAH_2P, TRANSLATE("Enable"), {"hccah2pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 2, menu.get_value(CAH_2P_CUT)) -- fm_mission_controller_2020/gb_casino_heist_planning.c [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 2, menu.get_value(CAH_2P_CUT)) -- fm_mission_controller_2020/gb_casino_heist_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 2, menu.get_default_state(CAH_2P_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 2, menu.get_default_state(CAH_2P_CUT)) -- [[update]]
                 end)
 
                 CAH_2P_CUT = menu.slider(CAH_2P, TRANSLATE("Custom Percentage"), {"hccah2pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -2624,9 +2624,9 @@ util.yield()
             CAH_3P = menu.list(CAH_PLAYER_CUT, TRANSLATE("Player 3"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
 
                 CAH_3P_CUT_LOOP = menu.toggle_loop(CAH_3P, TRANSLATE("Enable"), {"hccah3pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 3, menu.get_value(CAH_3P_CUT)) -- gb_casino_heist_planning.c [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 3, menu.get_value(CAH_3P_CUT)) -- gb_casino_heist_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 3, menu.get_default_state(CAH_3P_CUT)) --[[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 3, menu.get_default_state(CAH_3P_CUT)) --[[update]]
                 end)
 
                 CAH_3P_CUT = menu.slider(CAH_3P, TRANSLATE("Custom Percentage"), {"hccah3pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -2636,9 +2636,9 @@ util.yield()
             CAH_4P = menu.list(CAH_PLAYER_CUT, TRANSLATE("Player 4"), {}, TRANSLATE("Only works if you are host of the heist."), function(); end)
                 
                 CAH_4P_CUT_LOOP = menu.toggle_loop(CAH_4P, TRANSLATE("Enable"), {"hccah4pcutloop"}, "", function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 4, menu.get_value(CAH_4P_CUT)) -- gb_casino_heist_planning.c [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 4, menu.get_value(CAH_4P_CUT)) -- gb_casino_heist_planning.c [[update]]
                 end, function()
-                    SET_INT_GLOBAL(1971951 + 1497 + 736 + 92 + 4, menu.get_default_state(CAH_4P_CUT)) -- [[update]]
+                    SET_INT_GLOBAL(1971952 + 1497 + 736 + 92 + 4, menu.get_default_state(CAH_4P_CUT)) -- [[update]]
                 end)
 
                 CAH_4P_CUT = menu.slider(CAH_4P, TRANSLATE("Custom Percentage"), {"hccah4pcut"}, "(%)", 0, 1000, 100, 5, function(); end)
@@ -2658,9 +2658,9 @@ util.yield()
 
         menu.action(CAH_ADVCED, TRANSLATE("Force Ready"), {"hccahforceready"}, TRANSLATE("Forces the players on board to ready."), function() 
             -- [[update]]
-            SET_INT_GLOBAL(1976314 + 1 + (1 * 68) + 8 + 1, 1) -- Thanks to @vithiam on Discord
-            SET_INT_GLOBAL(1976314 + 1 + (2 * 68) + 8 + 2, 1) 
-            SET_INT_GLOBAL(1976314 + 1 + (3 * 68) + 8 + 3, 1)
+            SET_INT_GLOBAL(1976315 + 1 + (1 * 68) + 8 + 1, 1) -- Thanks to @vithiam on Discord
+            SET_INT_GLOBAL(1976315 + 1 + (2 * 68) + 8 + 2, 1) 
+            SET_INT_GLOBAL(1976315 + 1 + (3 * 68) + 8 + 3, 1)
         end)
 
         menu.action(CAH_ADVCED, TRANSLATE("Skip Drilling The Vault Door"), {"hccahinsvault"}, "", function() -- https://www.unknowncheats.me/forum/3418914-post13398.html
@@ -3006,7 +3006,7 @@ util.yield()
         }, function(index)
             util.create_tick_handler(function()
                 if not util.is_session_started() then return end
-                SET_INT_GLOBAL(1971951 + 1497 + 1017, index - 1) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
+                SET_INT_GLOBAL(1971952 + 1497 + 1017, index - 1) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
             end)
             menu.trigger_commands("hccahrefreshboards")
         end)
@@ -3026,7 +3026,7 @@ util.yield()
         }, function(index)
             util.create_tick_handler(function()
                 if not util.is_session_started() then return end
-                SET_INT_GLOBAL(1971951 + 1497 + 1018, index - 1) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
+                SET_INT_GLOBAL(1971952 + 1497 + 1018, index - 1) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
             end)
             menu.trigger_commands("hccahrefreshboards")
         end)
@@ -3038,7 +3038,7 @@ util.yield()
         }, function(index)
             util.create_tick_handler(function()
                 if not util.is_session_started() then return end
-                SET_INT_GLOBAL(1971951 + 1497 + 1019, (index * 3) - 3) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
+                SET_INT_GLOBAL(1971952 + 1497 + 1019, (index * 3) - 3) -- https://www.unknowncheats.me/forum/3666316-post96.html [[update]]
             end)
             menu.trigger_commands("hccahrefreshboards")
         end)
@@ -3051,7 +3051,7 @@ util.yield()
         }, function(index)
             util.create_tick_handler(function()
                 if not util.is_session_started() then return end
-                SET_INT_GLOBAL(1971951 + 1497 + 1020, index) -- [[update]]
+                SET_INT_GLOBAL(1971952 + 1497 + 1020, index) -- [[update]]
             end)
             menu.trigger_commands("hccahrefreshboards")
         end)
@@ -3063,7 +3063,7 @@ util.yield()
         }, function(index)
             util.create_tick_handler(function()
                 if not util.is_session_started() then return end
-                SET_INT_GLOBAL(1971951 + 1497 + 1021, index + 5) -- [[update]]
+                SET_INT_GLOBAL(1971952 + 1497 + 1021, index + 5) -- [[update]]
             end)
             menu.trigger_commands("hccahrefreshboards")
         end)
@@ -5069,7 +5069,7 @@ util.yield()
         -- Doing a few things to automate the opening of the mantrap doors in the casino heist, as well as setting up some heist data
         if IS_SCRIPT_ACTIVE("fm_mission_controller") then
             if IS_CURRENT_MISSION_CASINO_HEIST_FINALE() then
-                local Casino_Heist_Config_Data = 1971917 -- [[update]]
+                local Casino_Heist_Config_Data = 1971918 -- [[update]]
                 if STAT_GET_INT("H3OPT_APPROACH") == 2 then
                     SET_INT_GLOBAL(Casino_Heist_Config_Data + 22, 3)
                 end
