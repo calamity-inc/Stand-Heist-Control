@@ -708,6 +708,10 @@
 
 --- Main Lists
 
+    ForCasinoPresets = {}
+    ForCayoPresets = {}
+    ForDoomsPresets = {}
+
     menu.divider(menu.my_root(), TRANSLATE("Heist Control") .. " " .. HC_VERSION)
 
         PERICO_HEIST = menu.list(menu.my_root(), TRANSLATE("Cayo Perico Heist"), {"hccp"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Under $2.550.000 per run") .. "\n" .. TRANSLATE("- Under $4.100.000 per hour") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function();  end)
@@ -2295,7 +2299,7 @@ util.yield()
                 end
 
 
-                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
                 for i = 1, #ForCasinoPresets do
                     menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
                 end
@@ -2303,7 +2307,7 @@ util.yield()
             end,function()
                 if active_casino_preset_toggle == DIAMOND_SS then 
                     active_casino_preset_toggle = nil
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
@@ -2348,7 +2352,7 @@ util.yield()
                 end
 
 
-                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
                 for i = 1, #ForCasinoPresets do
                     menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
                 end
@@ -2356,7 +2360,7 @@ util.yield()
             end,function()
                 if active_casino_preset_toggle == DIAMOND_BA then
                     active_casino_preset_toggle = nil
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
@@ -2401,7 +2405,7 @@ util.yield()
                 end
 
 
-                SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 1410065408)
+                SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 1410065408)
                 for i = 1, #ForCasinoPresets do
                     menu.set_value(ForCasinoPresets[i][1], ForCasinoPresets[i][2])
                 end
@@ -2409,7 +2413,7 @@ util.yield()
             end,function()
                 if active_casino_preset_toggle == DIAMOND_AA then
                     active_casino_preset_toggle = nil
-                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[1], 3290000)
+                    SET_INT_GLOBAL(262145 + CasinoPresetTunables[2], 3290000)
                     for i = 1, #ForCasinoPresets do
                         menu.apply_default_state(ForCasinoPresets[i][1])
                         menu.set_help_text(ForCasinoPresets[i][1], ForCasinoPresets[i][3])
@@ -2698,53 +2702,62 @@ util.yield()
     TELEPORT_CAH = menu.list(CASINO_HEIST, TRANSLATE("Teleport Places"), {}, TRANSLATE("- How to change the line color: Stand > Settings > Appearance > Colours > HUD Colour") .. "\n\n" .. TRANSLATE("- How to change the AR Beacon color: Stand > Settings > Appearance > Colours > AR Colour"), function(); end)
 
         ArcadePos, ArcadeHeading = nil, nil
+        local function UPDATE_ARCADE_POS()
+            local Blip = HUD.GET_FIRST_BLIP_INFO_ID(740) -- Arcade Blip
+            if HUD.DOES_BLIP_EXIST(Blip) then
+                local Pos = HUD.GET_BLIP_COORDS(Blip)
+                local Arcades = { -- { arcade_name, pos, heading }
+                    { util.get_label_text("MP_ARC_1"), v3.new(-245.9931, 6210.773, 31.939024), -50 }, -- Pixel Pete's - Paleto Bay
+                    { util.get_label_text("MP_ARC_2"), v3.new(1695.5393, 4784.196, 41.94444), -95 }, -- Wonderama - Grapeseed
+                    { util.get_label_text("MP_ARC_3"), v3.new(-115.45246, -1772.0801, 29.858917), -125 }, -- Warehouse - Davis
+                    { util.get_label_text("FMC_LOC_WSTVNWD"), v3.new(-600.911, 279.97433, 82.041245), 80 }, -- Eight-Bit - Vinewood, West Vinewood
+                    { util.get_label_text("MP_ARC_5"), v3.new(-1269.7747, -304.4372, 37.001965), 75 }, -- Insert Coin - Rockford Hills
+                    { util.get_label_text("MP_ARC_6"), v3.new(758.91815, -814.60864, 26.301702), 90 }, -- Videogeddon - La Mesa
+                }
+                local min_dist = 9999999.0
+                local closest_idx = 1
+                for i = 1, #Arcades do
+                    local dx = Pos.x - Arcades[i][2].x
+                    local dy = Pos.y - Arcades[i][2].y
+                    local dist_sq = dx * dx + dy * dy
+                    if dist_sq < min_dist then
+                        min_dist = dist_sq
+                        closest_idx = i
+                    end
+                end
+                ArcadePos = Arcades[closest_idx][2]
+                ArcadeHeading = Arcades[closest_idx][3]
+            end
+        end
+
         util.create_tick_handler(function()
             if IS_IN_ARCADE() then return end
-
-            local Blip = HUD.GET_FIRST_BLIP_INFO_ID(740) -- Arcade Blip
-            local Pos = HUD.GET_BLIP_COORDS(Blip)
-            local Zone = ZONE.GET_NAME_OF_ZONE(Pos.x, Pos.y, Pos.z)
-            local Label = util.get_label_text(Zone)
-            local Arcades = { -- { arcade_name, pos, heading }
-                { util.get_label_text("MP_ARC_1"), v3.new(-245.9931, 6210.773, 31.939024), -50 }, -- Pixel Pete's - Paleto Bay
-                { util.get_label_text("MP_ARC_2"), v3.new(1695.5393, 4784.196, 41.94444), -95 }, -- Wonderama - Grapeseed
-                { util.get_label_text("MP_ARC_3"), v3.new(-115.45246, -1772.0801, 29.858917), -125 }, -- Warehouse - Davis
-                { util.get_label_text("FMC_LOC_WSTVNWD"), v3.new(-600.911, 279.97433, 82.041245), 80 }, -- Eight-Bit - Vinewood, West Vinewood
-                { util.get_label_text("MP_ARC_5"), v3.new(-1269.7747, -304.4372, 37.001965), 75 }, -- Insert Coin - Rockford Hills
-                { util.get_label_text("MP_ARC_6"), v3.new(758.91815, -814.60864, 26.301702), 90 }, -- Videogeddon - La Mesa
-            }
-            for i = 1, #Arcades do
-                if string.contains(Arcades[i][1], Label) then
-                    ArcadePos = Arcades[i][2]
-                    ArcadeHeading = Arcades[i][3]
-                end
-            end
+            UPDATE_ARCADE_POS()
         end)
 
         TELEPORT_CAH_ENTRANCE = menu.action(TELEPORT_CAH, TRANSLATE("Entrance Of Your Arcade"), {}, TRANSLATE("Note that works perfectly when no other players are in your session."), function()
+            if not ArcadePos then
+                UPDATE_ARCADE_POS()
+            end
             if ArcadePos and ArcadeHeading ~= nil then
                 TELEPORT(ArcadePos.x, ArcadePos.y, ArcadePos.z)
                 SET_HEADING(ArcadeHeading)
             else
-                NOTIFY(TRANSLATE("Please go out of the current interior to use this feature."))
+                if INTERIOR.GET_INTERIOR_FROM_ENTITY(players.user_ped()) ~= 0 then
+                    NOTIFY(TRANSLATE("Please go out of the current interior to use this feature."))
+                else
+                    NOTIFY(TRANSLATE("Arcade blip not found. Make sure you own an Arcade."))
+                end
             end
         end)
 
         menu.divider(TELEPORT_CAH, TRANSLATE("Inside"))
 
             TELEPORT_CAH_IN_BOARD = menu.action(TELEPORT_CAH, TRANSLATE("Planning Boards (Arcade)"), {}, TRANSLATE("You should in your arcade to use this teleport!"), function()
-                if IS_IN_ARCADE() then
-                    TELEPORT(2711.773, -369.458, -54.781)
-                else
-                    NOTIFY(menu.get_help_text(TELEPORT_CAH_IN_BOARD))
-                end
+                TELEPORT(2711.773, -369.458, -54.781)
             end)
             TELEPORT_CAH_IN_EXIT = menu.action(TELEPORT_CAH, TRANSLATE("Garage Exit (Arcade)"), {}, TRANSLATE("You should in your arcade to use this teleport!"), function()
-                if IS_IN_ARCADE() then
-                    TELEPORT(2677.237, -361.494, -55.187)
-                else
-                    NOTIFY(menu.get_help_text(TELEPORT_CAH_IN_EXIT))
-                end
+                TELEPORT(2677.237, -361.494, -55.187)
             end)
             TELEPORT_CAH_IN_DISPOSAL = menu.action(TELEPORT_CAH, TRANSLATE("Waste Disposal (Casino)"), {}, "", function()
                 TELEPORT(2542.052, -214.3084, -58.722965)
