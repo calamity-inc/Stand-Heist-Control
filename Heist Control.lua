@@ -708,6 +708,10 @@
 
 --- Main Lists
 
+    ForCasinoPresets = {}
+    ForCayoPresets = {}
+    ForDoomsPresets = {}
+
     menu.divider(menu.my_root(), TRANSLATE("Heist Control") .. " " .. HC_VERSION)
 
         PERICO_HEIST = menu.list(menu.my_root(), TRANSLATE("Cayo Perico Heist"), {"hccp"}, TRANSLATE("Max payout for this heist") .. "\n\n" .. TRANSLATE("- Under $2.550.000 per run") .. "\n" .. TRANSLATE("- Under $4.100.000 per hour") .. "\n\n" .. TRANSLATE("You won't get money if you don't keep money limitation!"), function();  end)
